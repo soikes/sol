@@ -1,4 +1,4 @@
-export const Key = {
+const Key = {
   _pressed: {},
 
   LEFT: 65,
@@ -32,5 +32,13 @@ export default class AppInput {
 
   backwardPressed() {
     return Key.isDown(Key.DOWN);
+  }
+
+  turnLeftPressed() {
+    return Key.isDown(Key.LEFT);
+  }
+
+  turnRightPressed() {
+    return Key.isDown(Key.RIGHT);
   }
 }

@@ -8,7 +8,7 @@ window.onload = function() {
   var axesHelper = new THREE.AxesHelper(5);
   game.graphics.addToScene(axesHelper);
 
-  var cube = Cube.build(game.graphics);
+  var cube = Cube.build(game.graphics, game.input);
 
   var egeometry = new THREE.SphereGeometry(40, 38, 38);
   var ematerial = new THREE.MeshStandardMaterial({ color: 0x0000ff });

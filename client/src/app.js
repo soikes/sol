@@ -1,9 +1,10 @@
 import AppGraphics from './appGraphics';
+import AppInput from './appInput';
 
 export default class App {
   constructor() {
     this.graphics = new AppGraphics();
-
+    this.input = new AppInput();
     this.entities = [];
   }
 
@@ -28,4 +29,4 @@ export default class App {
   update() {
     this.entities.forEach(ent => ent.update());
   }
-};
+}

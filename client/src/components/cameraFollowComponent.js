@@ -1,13 +1,13 @@
 export default class CameraFollowComponent {
-  constructor(entity, graphics) {
-    this.entity = entity;
+  constructor(transform, graphics) {
+    this.transform = transform;
     this.graphics = graphics;
     this.following = true;
   }
 
   update() {
     if (this.following) {
-      this.graphics.camera.obj.lookAt(this.entity.position);
+      this.graphics.cameraFollow(this.transform.pos);
     }
   }
 
