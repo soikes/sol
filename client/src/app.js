@@ -13,17 +13,17 @@ export default class App {
   }
 
   run(t) {
-    this.stopFrame = window.requestAnimationFrame((t) => { this.run(t) });
+    this.stopFrame = window.requestAnimationFrame((t) => { this.run(t); });
     this.update();
     this.graphics.render();
   }
 
   start() {
-    window.requestAnimationFrame((t) => { this.run(t) });
+    window.requestAnimationFrame((t) => { this.run(t); });
   }
 
   stop() {
-    window.cancelAnimationFrame(() => { this.stopFrame() });
+    window.cancelAnimationFrame(() => { this.stopFrame(); });
   }
 
   update() {

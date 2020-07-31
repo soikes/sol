@@ -1,3 +1,5 @@
+import * as THREE from 'three';
+
 export default class TransformComponent {
   constructor(pos, dir, scale) {
     if (this.pos === null) {

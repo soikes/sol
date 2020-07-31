@@ -8,8 +8,12 @@ export default class GraphicsComponent {
 
   update() {
     this.obj.position.x = this.transform.pos.x;
-    this.obj.rotation.y += 0.05;
-    // this.obj.rotation.x -= 0.1;
+    this.obj.position.y = this.transform.pos.y;
+    this.obj.position.z = this.transform.pos.z;
+
+    this.obj.rotation.x = this.transform.rot.x;
+    this.obj.rotation.y = this.transform.rot.y;
+    this.obj.rotation.z = this.transform.rot.z;
   }
 
   obj() {

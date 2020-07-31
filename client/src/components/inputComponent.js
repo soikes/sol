@@ -1,12 +1,29 @@
 export default class InputComponent {
-  constructor(transform, input) {
+  constructor(transform, input, physics) {
     this.transform = transform;
     this.input = input;
+    this.physics = physics;
   }
 
   update() {
     if (this.input.forwardPressed()) {
-      this.transform.pos.x += 0.1;
+      this.physics.accelerating = true;
+    } else {
+      this.physics.accelerating = false;
+    }
+    
+    if (this.input.turnLeftPressed()) {
+      this.physics.rotating = true;
+      this.physics.rotateDirection.y = 1; 
+    } else {
+      this.physics.rotating = false;
+    }
+
+    if (this.input.turnRightPressed()) {
+      this.physics.rotating = true;
+      this.physics.rotateDirection.y = -1; 
+    } else {
+      this.physics.rotating = false;
     }
   }
 }

@@ -13,4 +13,8 @@ export default class GameObject {
   attachComponent(component) {
     this.components.push(component);
   }
+
+  destroy() {
+    this.components.forEach(component => component.destroy());
+  }
 }
