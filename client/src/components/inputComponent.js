@@ -15,11 +15,7 @@ export default class InputComponent {
     if (this.input.turnLeftPressed()) {
       this.physics.rotating = true;
       this.physics.rotateDirection.y = 1; 
-    } else {
-      this.physics.rotating = false;
-    }
-
-    if (this.input.turnRightPressed()) {
+    } else if (this.input.turnRightPressed()) {
       this.physics.rotating = true;
       this.physics.rotateDirection.y = -1; 
     } else {

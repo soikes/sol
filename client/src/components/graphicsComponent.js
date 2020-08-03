@@ -1,15 +1,20 @@
 export default class GraphicsComponent {
-  constructor(graphics, obj, transform) {
+  constructor(graphics, obj, transform, offset) {
     this.graphics = graphics;
     this.obj = obj;
     this.graphics.addToScene(this.obj);
     this.transform = transform;
+    this.offset = offset;
   }
 
   update() {
-    this.obj.position.x = this.transform.pos.x;
-    this.obj.position.y = this.transform.pos.y;
-    this.obj.position.z = this.transform.pos.z;
+    let pos = this.transform.pos.clone();
+    if (this.offset) {
+      pos.add(this.offset);
+    }
+    this.obj.position.x = pos.x;
+    this.obj.position.y = pos.y;
+    this.obj.position.z = pos.z;
 
     this.obj.rotation.x = this.transform.rot.x;
     this.obj.rotation.y = this.transform.rot.y;

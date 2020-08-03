@@ -13,11 +13,14 @@ export default class Cube {
     var geometry = new THREE.CubeGeometry();
     var material = new THREE.MeshLambertMaterial({ color: 0x00ff00 });
     var cubeGfx = new GraphicsComponent(graphics, new THREE.Mesh(geometry, material), cubeTf);
+    var sgeometry = new THREE.SphereGeometry();
+    var smaterial = new THREE.MeshLambertMaterial({ color: 0xff0000 });
+    var sphereGfx = new GraphicsComponent(graphics, new THREE.Mesh(sgeometry, smaterial), cubeTf, new THREE.Vector3(-10,0,-10));
     var cubeFollow = new CameraFollowComponent(cubeTf, graphics);
     var cubePhys = new PhysicsComponent(new THREE.Vector3(), 0.2, 0.005, 0.05, cubeTf);
     var cubeInput = new InputComponent(cubeTf, input, cubePhys);
     // var cubeSpin = new SpinComponent(cubeTf);
 
-    return new GameObject(cubeTf, cubeGfx, cubeFollow, cubeInput, cubePhys);
+    return new GameObject(cubeTf, cubeGfx, cubeFollow, cubeInput, cubePhys, sphereGfx);
   }
 }

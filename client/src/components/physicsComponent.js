@@ -28,11 +28,20 @@ export default class PhysicsComponent {
       if (this.transformComponent.rot.x < 0) {
         this.transformComponent.rot.x = 2*Math.PI;
       }
+      if (this.transformComponent.rot.x > 2*Math.PI) {
+        this.transformComponent.rot.x = 0;
+      }
       if (this.transformComponent.rot.y < 0) {
         this.transformComponent.rot.y = 2*Math.PI;
       }
+      if (this.transformComponent.rot.y > 2*Math.PI) {
+        this.transformComponent.rot.y = 0;
+      }
       if (this.transformComponent.rot.z < 0) {
         this.transformComponent.rot.z = 2*Math.PI;
+      }
+      if (this.transformComponent.rot.z > 2*Math.PI) {
+        this.transformComponent.rot.z = 0;
       }
     }
   }
@@ -40,13 +49,13 @@ export default class PhysicsComponent {
   calculateVelocity() {
     if (this.accelerating) {
       let vix = this.velocity.x;
-      let vfx = vix + (this.accelerationFactor * Math.cos(this.transformComponent.rot.y));
+      let vfx = vix + (this.accelerationFactor * Math.sin(this.transformComponent.rot.y));
 
       let viz = this.velocity.z;
-      let vfz = viz + (this.accelerationFactor * Math.sin(this.transformComponent.rot.y));
+      let vfz = viz + (this.accelerationFactor * Math.cos(this.transformComponent.rot.y));
 
       let dir = new THREE.Vector2(vfx, vfz).normalize();
-      let mag = Math.sqrt(vfx, vfz);
+      let mag = Math.sqrt(vfx*vfx + vfz*vfz);
 
       if (mag <= this.maxSpeed) {
         this.velocity.x = vfx;
