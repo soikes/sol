@@ -12,9 +12,7 @@ export default class GraphicsComponent {
     if (this.offset) {
       pos.add(this.offset);
     }
-    this.obj.position.x = pos.x;
-    this.obj.position.y = pos.y;
-    this.obj.position.z = pos.z;
+    this.obj.position.copy(pos);
 
     this.obj.rotation.x = this.transform.rot.x;
     this.obj.rotation.y = this.transform.rot.y;
