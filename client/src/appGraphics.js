@@ -6,7 +6,8 @@ export default class AppGraphics {
     this.cameraDist = 20;
     const renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
+    let rcontainer = document.querySelector("#app #rcontainer");
+    rcontainer.appendChild(renderer.domElement);
     this.renderer = renderer;
 
     const scene = new THREE.Scene();

@@ -2,11 +2,57 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono&display=swap" rel="stylesheet">
     <style>
-      body { margin: 0; }
-      canvas { display: block; }
+      html, body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        border: 0;
+        padding: 0;
+        font-family: 'Space Mono', monospace;
+      }
+      #app, #hud, #rcontainer, canvas { 
+        margin: 0;
+        border: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+      #hud {
+        z-index: 10;
+        /* display: grid; */
+      }
+      canvas { 
+        display: block;
+      }
+      .noselect {
+        -webkit-touch-callout: none; /* iOS Safari */
+          -webkit-user-select: none; /* Safari */
+           -khtml-user-select: none; /* Konqueror HTML */
+             -moz-user-select: none; /* Old versions of Firefox */
+              -ms-user-select: none; /* Internet Explorer/Edge */
+                  user-select: none; /* Non-prefixed version, currently
+                                        supported by Chrome, Edge, Opera and Firefox */
+      }
+      #info {
+        background-color: rgba(50,50,50,0.0);
+      }
     </style>
     <script src="main.js"></script>
   </head>
-  <body></body>
+  <body>
+    <div id="app">
+      <div id="hud" class="noselect">
+        <div id="info">
+          Current system: Sol<br>
+          U:13941.129312 V:79964.425325 W:041837.564522
+        </div>
+      </div>
+      <div id="rcontainer"></div>
+    </div>
+  </body>
 </html>
