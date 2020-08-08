@@ -6,8 +6,8 @@ export default class GameObject {
     this.id = 1;
   }
   
-  update() {
-    this.components.forEach(component => component.update());
+  update(dt) {
+    this.components.forEach(component => component.update(dt));
   }
   
   attachComponent(component) {

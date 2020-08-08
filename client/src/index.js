@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import App from './app';
+import App from './app/app';
 import Ship from './entities/ship';
 import Planet from './entities/planet';
 
@@ -28,8 +28,8 @@ window.onload = function() {
   // var alight = new THREE.AmbientLight();
   // game.graphics.addToScene(alight);
 
-  var size = 100;
-  var divisions = 100;
+  // var size = 100;
+  // var divisions = 100;
 
   // var gridHelper = new THREE.GridHelper(size, divisions);
   // gridHelper.position.set(0, -5, 0);

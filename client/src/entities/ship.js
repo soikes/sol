@@ -4,9 +4,8 @@ import InputComponent from '../components/inputComponent';
 import TransformComponent from '../components/transformComponent';
 import GameObject from './gameObject';
 import CameraFollowComponent from '../components/cameraFollowComponent';
-import SpinComponent from '../components/spinComponent';
 import PhysicsComponent from '../components/physicsComponent';
-import Observable from '../observable.js';
+import Observable from '../util/observable.js';
 
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
@@ -19,7 +18,7 @@ export default class Ship {
       hudPosObserver.subscribe(hud.updatePos.bind(hud));
 
       let shipFollow = new CameraFollowComponent(shipTf, graphics);
-      let shipPhys = new PhysicsComponent(new THREE.Vector3(), 0.2, 0.005, 0.05, shipTf);
+      let shipPhys = new PhysicsComponent(new THREE.Vector3(), 15, 8, 0.05, shipTf);
       let shipInput = new InputComponent(shipTf, input, shipPhys);
       let loader = new GLTFLoader();
       loader.load( 'assets/ship.glb', function ( gltf ) {

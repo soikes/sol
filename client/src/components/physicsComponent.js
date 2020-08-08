@@ -14,10 +14,10 @@ export default class PhysicsComponent {
     this.transformComponent = transformComponent;
   }
 
-  update() {
+  update(dt) {
     this.updateRotation();
-    this.calculateVelocity();
-    this.updatePosition(); //TODO pass in dt into update() so you can use it here
+    this.calculateVelocity(dt);
+    this.updatePosition(dt); //TODO pass in dt into update() so you can use it here
   }
 
   updateRotation() {
@@ -46,13 +46,13 @@ export default class PhysicsComponent {
     }
   }
 
-  calculateVelocity() {
+  calculateVelocity(dt) {
     if (this.accelerating) {
       let vix = this.velocity.x;
-      let vfx = vix + (this.accelerationFactor * Math.sin(this.transformComponent.rot.y));
+      let vfx = vix + (this.accelerationFactor * Math.sin(this.transformComponent.rot.y)) * dt;
 
       let viz = this.velocity.z;
-      let vfz = viz + (this.accelerationFactor * Math.cos(this.transformComponent.rot.y));
+      let vfz = viz + (this.accelerationFactor * Math.cos(this.transformComponent.rot.y)) * dt;
 
       let dir = new THREE.Vector2(vfx, vfz).normalize();
       let mag = Math.sqrt(vfx*vfx + vfz*vfz);
@@ -67,8 +67,9 @@ export default class PhysicsComponent {
     }
   }
 
-  updatePosition() {
-    this.transformComponent.addPos(new THREE.Vector3(this.velocity.x, 0, this.velocity.z));
+  updatePosition(dt) {
+    let d = new THREE.Vector3(this.velocity.x, 0, this.velocity.z).multiplyScalar(dt);
+    this.transformComponent.addPos(d);
   }
 
 }

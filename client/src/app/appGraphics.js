@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import GraphicsComponent from './components/graphicsComponent';
 
 export default class AppGraphics {
   constructor(container) {

@@ -21,6 +21,10 @@ export default class TransformComponent {
     this.observer = observer;
   }
 
+  stopObserving() {
+    this.observer = null;
+  }
+
   notify(val) {
     if (this.observer) {
       this.observer.notify(val);
