@@ -6,20 +6,24 @@ import GameObject from './gameObject';
 import CameraFollowComponent from '../components/cameraFollowComponent';
 import SpinComponent from '../components/spinComponent';
 import PhysicsComponent from '../components/physicsComponent';
+import Observable from '../observable.js';
 
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 export default class Ship {
-  static build(graphics, input) {
+  static build(graphics, input, hud) {
     return new Promise((resolve, reject) => {
-      var shipGfx;
-      var shipTf = new TransformComponent(new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3());
-      var loader = new GLTFLoader();
+      let shipTf = new TransformComponent(new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3());
+      let hudPosObserver = new Observable();
+      shipTf.observe(hudPosObserver);
+      hudPosObserver.subscribe(hud.updatePos.bind(hud));
+
+      let shipFollow = new CameraFollowComponent(shipTf, graphics);
+      let shipPhys = new PhysicsComponent(new THREE.Vector3(), 0.2, 0.005, 0.05, shipTf);
+      let shipInput = new InputComponent(shipTf, input, shipPhys);
+      let loader = new GLTFLoader();
       loader.load( 'assets/ship.glb', function ( gltf ) {
-        shipGfx = new GraphicsComponent(graphics, gltf.scene, shipTf);
-        var shipFollow = new CameraFollowComponent(shipTf, graphics);
-        var shipPhys = new PhysicsComponent(new THREE.Vector3(), 0.2, 0.005, 0.05, shipTf);
-        var shipInput = new InputComponent(shipTf, input, shipPhys);
+       let shipGfx = new GraphicsComponent(graphics, gltf.scene, shipTf);
         resolve(new GameObject(shipTf, shipGfx, shipFollow, shipInput, shipPhys));
       }, undefined, function ( error ) {
         console.error( error );

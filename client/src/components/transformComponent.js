@@ -17,5 +17,20 @@ export default class TransformComponent {
     this.scale = scale;
   }
 
+  observe(observer) {
+    this.observer = observer;
+  }
+
+  notify(val) {
+    if (this.observer) {
+      this.observer.notify(val);
+    }
+  }
+
+  addPos(pos) {
+    this.pos.add(pos);
+    this.notify(this.pos);
+  }
+
   update() {}
 }

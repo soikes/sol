@@ -1,10 +1,12 @@
 import AppGraphics from './appGraphics';
 import AppInput from './appInput';
+import AppHud from './appHud';
 
 export default class App {
-  constructor() {
-    this.graphics = new AppGraphics();
+  constructor(container, hud) {
+    this.graphics = new AppGraphics(container);
     this.input = new AppInput();
+    this.hud = new AppHud(hud);
     this.entities = [];
   }
 

@@ -4,12 +4,15 @@ import Ship from './entities/ship';
 import Planet from './entities/planet';
 
 window.onload = function() {
-  var game = new App();
+  var game = new App(
+    document.querySelector("#app #rcontainer"), 
+    document.querySelector("#app #hud")
+  );
 
   var axesHelper = new THREE.AxesHelper(5);
   game.graphics.addToScene(axesHelper);
 
-  Ship.build(game.graphics, game.input).then(ship => { game.spawn(ship); });
+  Ship.build(game.graphics, game.input, game.hud).then(ship => { game.spawn(ship); });
 
   var planet = Planet.build(game.graphics);
 

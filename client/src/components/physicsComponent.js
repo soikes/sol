@@ -68,8 +68,7 @@ export default class PhysicsComponent {
   }
 
   updatePosition() {
-    this.transformComponent.pos.x += this.velocity.x;
-    this.transformComponent.pos.z += this.velocity.z;
+    this.transformComponent.addPos(new THREE.Vector3(this.velocity.x, 0, this.velocity.z));
   }
 
 }

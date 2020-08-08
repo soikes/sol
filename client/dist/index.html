@@ -39,7 +39,8 @@
                                         supported by Chrome, Edge, Opera and Firefox */
       }
       #info {
-        background-color: rgba(50,50,50,0.0);
+        background-color: rgba(50,50,50,0.3);
+        color: white;
       }
     </style>
     <script src="main.js"></script>
@@ -47,9 +48,11 @@
   <body>
     <div id="app">
       <div id="hud" class="noselect">
-        <div id="info">
+        <div id="position">
           Current system: Sol<br>
-          U:13941.129312 V:79964.425325 W:041837.564522
+          U:<span id="u">13941.129312</span>
+          V:<span id="v">79964.425325</span> 
+          W:<span id="w">041837.564522</span>
         </div>
       </div>
       <div id="rcontainer"></div>

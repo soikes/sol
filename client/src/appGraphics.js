@@ -2,12 +2,11 @@ import * as THREE from 'three';
 import GraphicsComponent from './components/graphicsComponent';
 
 export default class AppGraphics {
-  constructor() {
+  constructor(container) {
     this.cameraDist = 20;
     const renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
-    let rcontainer = document.querySelector("#app #rcontainer");
-    rcontainer.appendChild(renderer.domElement);
+    container.appendChild(renderer.domElement);
     this.renderer = renderer;
 
     const scene = new THREE.Scene();
