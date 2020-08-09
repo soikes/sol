@@ -8,14 +8,21 @@ import PhysicsComponent from '../components/physicsComponent';
 import Observable from '../util/observable.js';
 
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import HealthComponent from '../components/healthComponent';
+import CollisionComponent from '../components/collisionComponent';
 
 export default class Ship {
-  static build(graphics, input, hud) {
+  static build(graphics, input, hud, world) {
     return new Promise((resolve, reject) => {
       let shipTf = new TransformComponent(new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3());
       let hudPosObserver = new Observable();
-      shipTf.observe(hudPosObserver);
       hudPosObserver.subscribe(hud.updatePos.bind(hud));
+      shipTf.observe(hudPosObserver);
+
+      let shipHealth = new HealthComponent(0, 100, 100);
+      let hudHealthObserver = new Observable();
+      hudHealthObserver.subscribe(hud.updateHealth.bind(hud));
+      shipHealth.observe(hudHealthObserver);
 
       let shipFollow = new CameraFollowComponent(shipTf, graphics);
       let shipPhys = new PhysicsComponent(new THREE.Vector3(), 15, 8, 0.05, shipTf);
@@ -23,7 +30,9 @@ export default class Ship {
       let loader = new GLTFLoader();
       loader.load( 'assets/ship.glb', function ( gltf ) {
        let shipGfx = new GraphicsComponent(graphics, gltf.scene, shipTf);
-        resolve(new GameObject(shipTf, shipGfx, shipFollow, shipInput, shipPhys));
+       let shipCollision = new CollisionComponent(shipGfx.object(), shipTf, graphics, shipPhys, true);
+       world.addCollider(shipCollision);
+        resolve(new GameObject(shipTf, shipGfx, shipFollow, shipInput, shipPhys, shipHealth, shipCollision));
       }, undefined, function ( error ) {
         console.error( error );
         reject(error);

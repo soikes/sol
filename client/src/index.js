@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import App from './app/app';
 import Ship from './entities/ship';
 import Planet from './entities/planet';
+import Asteroid from './entities/asteroid';
 
 window.onload = function() {
   var game = new App(
@@ -12,8 +13,11 @@ window.onload = function() {
   var axesHelper = new THREE.AxesHelper(5);
   game.graphics.addToScene(axesHelper);
 
-  Ship.build(game.graphics, game.input, game.hud).then(ship => { game.spawn(ship); });
-
+  Ship.build(game.graphics, game.input, game.hud, game.world).then(ship => { game.spawn(ship); });
+  
+  let asteroid = Asteroid.build(game.graphics, game.world);
+  game.spawn(asteroid);
+  
   var planet = Planet.build(game.graphics);
 
   // var light = new THREE.PointLight( 0xff0000, 1, 0 );

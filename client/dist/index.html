@@ -38,7 +38,7 @@
                   user-select: none; /* Non-prefixed version, currently
                                         supported by Chrome, Edge, Opera and Firefox */
       }
-      #position {
+      .transparentPanel {
         background-color: rgba(50,50,50,0.3);
         color: white;
       }
@@ -48,11 +48,14 @@
   <body>
     <div id="app">
       <div id="hud" class="noselect">
-        <div id="position">
+        <div id="position" class="transparentPanel">
           Current system: Sol<br>
           Heliocentric Coordinates: 
           lat:<span id="u"></span>
           long:<span id="w"></span>
+        </div>
+        <div id="health" class="transparentPanel">
+          Ship Integrity: <span id="amount"></span>
         </div>
       </div>
       <div id="rcontainer"></div>

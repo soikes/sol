@@ -1,0 +1,14 @@
+- the closer you are to a sun, the higher your temperature reading gets. If you stay in a dangerous zone too long, ship integrity fails
+
+- planets closest to sun will be too hot to inhabit but might have good resources
+- planets too far from a sun will be too cold but might also have good resources
+- asteroid belts can be mined for materials
+- all systems will have a "Goldilocks Zone" where planets will have the right temperature for habitating
+
+- intra-system trade networks can be established but they need to be protected!
+
+- ships will hop from one system to another via:
+  - warp gates?
+  - personal jump drives?
+  - need to read about theoretical technologies and what makes the most sense
+  - maybe either of these technologies can be acquired at some stage of the game

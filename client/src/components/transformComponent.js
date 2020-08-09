@@ -2,6 +2,7 @@ import * as THREE from 'three';
 
 export default class TransformComponent {
   constructor(pos, rot, scale) {
+    this.changed = false;
     if (this.pos === null) {
       this.pos = new THREE.Vector3();
     } else {
@@ -19,6 +20,7 @@ export default class TransformComponent {
 
   observe(observer) {
     this.observer = observer;
+    this.notify(this.pos);
   }
 
   stopObserving() {
@@ -33,8 +35,13 @@ export default class TransformComponent {
 
   addPos(pos) {
     this.pos.add(pos);
-    this.notify(this.pos);
+    this.changed = true;
   }
 
-  update() {}
+  update() {
+    if (this.changed) {
+      this.notify(this.pos);
+    }
+    this.changed = false;
+  }
 }

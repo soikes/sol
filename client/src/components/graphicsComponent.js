@@ -19,7 +19,7 @@ export default class GraphicsComponent {
     this.obj.rotation.z = this.transform.rot.z;
   }
 
-  obj() {
+  object() {
     return this.obj;
   }
 }

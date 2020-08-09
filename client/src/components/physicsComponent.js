@@ -72,4 +72,8 @@ export default class PhysicsComponent {
     this.transformComponent.addPos(d);
   }
 
+  bounce() {
+    this.velocity.multiplyScalar(-1); // TODO This doesn't work properly lol
+  }
+
 }

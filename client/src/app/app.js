@@ -1,12 +1,14 @@
 import AppGraphics from './appGraphics';
 import AppInput from './appInput';
 import AppHud from './appHud';
+import AppWorld from './appWorld';
 
 export default class App {
   constructor(container, hud) {
     this.graphics = new AppGraphics(container);
     this.input = new AppInput();
     this.hud = new AppHud(hud);
+    this.world = new AppWorld();
     this.entities = [];
     this.configure();
   }
@@ -45,6 +47,7 @@ export default class App {
   }
 
   update(dt) {
+    this.world.calculateCollisions();
     this.entities.forEach(ent => ent.update(dt));
   }
 }
