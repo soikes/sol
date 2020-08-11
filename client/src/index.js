@@ -3,6 +3,7 @@ import App from './app/app';
 import Ship from './entities/ship';
 import Planet from './entities/planet';
 import Asteroid from './entities/asteroid';
+import Sun from './entities/sun';
 
 window.onload = function() {
   var game = new App(
@@ -13,21 +14,17 @@ window.onload = function() {
   var axesHelper = new THREE.AxesHelper(5);
   game.graphics.addToScene(axesHelper);
 
-  Ship.build(game.graphics, game.input, game.hud, game.world).then(ship => { game.spawn(ship); });
+  Ship.build(game.graphics, game.input, game.hud, game.world)
+    .then(ship => { game.spawn(ship); });
   
   let asteroid = Asteroid.build(game.graphics, game.world);
   game.spawn(asteroid);
   
   var planet = Planet.build(game.graphics);
+  game.spawn(planet);
 
-  // var light = new THREE.PointLight( 0xff0000, 1, 0 );
-  var light = new THREE.PointLight(0xffffff, 3, 0, 2);
-  light.position.set(20, 10, 80);
-  game.graphics.addToScene(light);
-
-  var sphereSize = 1;
-  var pointLightHelper = new THREE.PointLightHelper(light, sphereSize);
-  game.graphics.addToScene(pointLightHelper);
+  var sun = Sun.build(game.graphics);
+  game.spawn(sun);
 
   // var alight = new THREE.AmbientLight();
   // game.graphics.addToScene(alight);
@@ -38,8 +35,5 @@ window.onload = function() {
   // var gridHelper = new THREE.GridHelper(size, divisions);
   // gridHelper.position.set(0, -5, 0);
   // game.graphics.addToScene(gridHelper);
-
-  game.spawn(planet);
-
   game.start();
 };
