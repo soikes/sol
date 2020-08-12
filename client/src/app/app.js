@@ -15,7 +15,7 @@ export default class App {
 
   configure() {
     // this.fps = 60;
-    this.lastTs = Date.now();
+    this.lastTs = performance.now();
     this.interval = 1000 / this.fps;
   }
 

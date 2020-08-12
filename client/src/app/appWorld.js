@@ -12,11 +12,12 @@ export default class AppWorld {
 
     calculateCollisions() {
         for(let i = 0; i < this.colliders.length; i++) {
-            let obj = this.colliders[i];
+            let c1 = this.colliders[i];
             for(let j = i + 1; j < this.colliders.length; j++) {
-                let obj2 = this.colliders[j];
-                if (obj.intersects(obj2)) {
-                    console.log("collision detected!");
+                let c2 = this.colliders[j];
+                if (c1.intersects(c2)) {
+                    c1.collideStart(c2);
+                    console.log(`${i} collided with ${j}`);
                 }
             }
             // iterate through all objects

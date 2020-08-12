@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
 export default class CollisionComponent {
-    constructor(object, transform, graphics, physics, movable) {
+    constructor(object, transform, graphics, physics, ...collisionHandlers) {
         this.box = new THREE.Box3();
         this.object = object;
         this.box.setFromObject(object);
@@ -11,10 +11,10 @@ export default class CollisionComponent {
         this.transform = transform;
         this.physics = physics;
         this.colliding = false;
-        if (movable === undefined) {
-            this.movable = false;
+        if (collisionHandlers === undefined) {
+            this.collisionHandlers = [];
         } else {
-            this.movable = movable;
+            this.collisionHandlers = collisionHandlers;
         }
     }
 
@@ -28,6 +28,12 @@ export default class CollisionComponent {
 
     stoppedColliding() {
         this.colliding = false;
+    }
+
+    collideStart(c2) {
+        this.collisionHandlers.forEach(handler => {
+            handler(c2);
+        });
     }
 
     intersects(collision) {
@@ -44,8 +50,5 @@ export default class CollisionComponent {
     update() {
         this.box.setFromObject(this.object);
         this.helper.updateMatrixWorld();
-        if (this.movable && this.colliding) {
-            // this.physics.bounce();
-        }
     }
 }

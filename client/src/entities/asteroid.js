@@ -3,6 +3,7 @@ import GraphicsComponent from '../components/graphicsComponent';
 import TransformComponent from '../components/transformComponent';
 import CollisionComponent from '../components/collisionComponent';
 import GameObject from './gameObject';
+import CollisionDamageComponent from '../components/collisionDamageComponent';
 
 export default class Asteroid {
     static build(graphics, world) {
@@ -14,9 +15,15 @@ export default class Asteroid {
         asteroidMesh.receiveShadow = true;
 
         let asteroidGraphics = new GraphicsComponent(graphics, asteroidMesh, asteroidTransform);
-        let asteroidCollision = new CollisionComponent(asteroidGraphics.object(), asteroidTransform, graphics);
+        let asteroidCollisionDmg = new CollisionDamageComponent(1);
+        let asteroidCollision = new CollisionComponent(
+            asteroidGraphics.object(), 
+            asteroidTransform, 
+            graphics, 
+            null, 
+            asteroidCollisionDmg.onCollide.bind(asteroidCollisionDmg));
         world.addCollider(asteroidCollision);
 
-        return new GameObject(asteroidTransform, asteroidGraphics, asteroidCollision);
+        return new GameObject(asteroidTransform, asteroidGraphics, asteroidCollision, asteroidCollisionDmg);
     }
 }

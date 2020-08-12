@@ -35,6 +35,5 @@ export default class HealthComponent {
             this.notify(this.amount);
         }
         this.changed = false;
-        this.damage(0.01);
     }
 }
