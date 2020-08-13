@@ -30,7 +30,7 @@ export default class Ship {
       let loader = new GLTFLoader();
       loader.load( 'assets/ship.glb', function ( gltf ) {
        let shipGfx = new GraphicsComponent(graphics, gltf.scene, shipTf);
-       let shipCollision = new CollisionComponent(shipGfx.object(), shipTf, graphics, shipPhys, true);
+       let shipCollision = new CollisionComponent(shipGfx.object(), shipTf, graphics);
        world.addCollider(shipCollision);
         resolve(new GameObject(shipTf, shipGfx, shipFollow, shipInput, shipPhys, shipHealth, shipCollision));
       }, undefined, function ( error ) {

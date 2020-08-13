@@ -3,7 +3,8 @@ import GraphicsComponent from '../components/graphicsComponent';
 import TransformComponent from '../components/transformComponent';
 import CollisionComponent from '../components/collisionComponent';
 import GameObject from './gameObject';
-import CollisionDamageComponent from '../components/collisionDamageComponent';
+import CollisionBounceComponent from '../components/collisionBounceComponent';
+import GravityEffectComponent from '../components/gravityEffectComponent';
 
 export default class Asteroid {
     static build(graphics, world) {
@@ -15,15 +16,34 @@ export default class Asteroid {
         asteroidMesh.receiveShadow = true;
 
         let asteroidGraphics = new GraphicsComponent(graphics, asteroidMesh, asteroidTransform);
-        let asteroidCollisionDmg = new CollisionDamageComponent(1);
-        let asteroidCollision = new CollisionComponent(
+        
+        // let asteroidCollisionBounce = new CollisionBounceComponent(0.05);
+        // let asteroidCollision = new CollisionComponent(
+        //     asteroidGraphics.object(), 
+        //     asteroidTransform, 
+        //     graphics);
+        // asteroidCollision.onCollisionStart(asteroidCollisionBounce.collideStart.bind(asteroidCollisionBounce));
+        // asteroidCollision.onCollisionStop(asteroidCollisionBounce.collideStop.bind(asteroidCollisionBounce));
+        // world.addCollider(asteroidCollision);
+
+        let asteroidGravityEffect = new GravityEffectComponent(asteroidTransform, 6);
+        let asteroidGravityCollision = new CollisionComponent(
             asteroidGraphics.object(), 
             asteroidTransform, 
-            graphics, 
-            null, 
-            asteroidCollisionDmg.onCollide.bind(asteroidCollisionDmg));
-        world.addCollider(asteroidCollision);
+            graphics,
+            0.4 //TODO this does not scale, it ADDs X to the size... wrong
+        );
+        asteroidGravityCollision.onCollisionStart(asteroidGravityEffect.collideStart.bind(asteroidGravityEffect));
+        asteroidGravityCollision.onCollisionStop(asteroidGravityEffect.collideStop.bind(asteroidGravityEffect));
+        world.addCollider(asteroidGravityCollision);
 
-        return new GameObject(asteroidTransform, asteroidGraphics, asteroidCollision, asteroidCollisionDmg);
+        return new GameObject(
+            asteroidTransform, 
+            asteroidGraphics, 
+            // asteroidCollision, 
+            // asteroidCollisionBounce, 
+            asteroidGravityCollision, 
+            asteroidGravityEffect
+        );
     }
 }

@@ -2,9 +2,11 @@ import * as THREE from 'three';
 import GraphicsComponent from '../components/graphicsComponent';
 import TransformComponent from '../components/transformComponent';
 import GameObject from './gameObject';
+import CollisionDamageComponent from '../components/collisionDamageComponent';
+import CollisionComponent from '../components/collisionComponent';
 
 export default class Sun {
-    static build(graphics) {
+    static build(graphics, world) {
         var sunTransform = new TransformComponent(new THREE.Vector3(-200, 0, -200), new THREE.Vector3(), new THREE.Vector3());
 
         var sunGeometry = new THREE.SphereGeometry(80, 48, 48);
@@ -38,8 +40,15 @@ export default class Sun {
         ambLight.castShadow = false;
         graphics.addToScene(ambLight);
         
-        
+        let sunCollisionDmg = new CollisionDamageComponent(3);
+        let sunCollision = new CollisionComponent(
+            sunGraphics.object(), 
+            sunTransform, 
+            graphics);
+        sunCollision.onCollisionStart(sunCollisionDmg.collideStart.bind(sunCollisionDmg));
+        sunCollision.onCollisionStop(sunCollisionDmg.collideStop.bind(sunCollisionDmg));
+        world.addCollider(sunCollision);
 
-        return new GameObject(sunTransform, sunGraphics);
+        return new GameObject(sunTransform, sunGraphics, sunCollision, sunCollisionDmg);
     }
 }

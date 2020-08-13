@@ -12,7 +12,7 @@ export default class AppGraphics {
     this.scene = scene;
 
     const aspect = window.innerWidth / window.innerHeight;
-    let camera = new THREE.OrthographicCamera(- this.cameraDist * aspect, this.cameraDist * aspect, this.cameraDist, - this.cameraDist, 1, 1000);
+    let camera = new THREE.OrthographicCamera(- this.cameraDist * aspect, this.cameraDist * aspect, this.cameraDist, - this.cameraDist, 0, 1000);
     camera.position.set(this.cameraDist, this.cameraDist, this.cameraDist); // all components equal
     camera.lookAt(this.scene.position);
     this.camera = camera;

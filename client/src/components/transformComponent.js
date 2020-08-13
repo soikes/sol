@@ -44,4 +44,8 @@ export default class TransformComponent {
     }
     this.changed = false;
   }
+
+  position() {
+    return this.pos;
+  }
 }

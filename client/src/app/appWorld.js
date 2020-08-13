@@ -18,6 +18,8 @@ export default class AppWorld {
                 if (c1.intersects(c2)) {
                     c1.collideStart(c2);
                     console.log(`${i} collided with ${j}`);
+                } else {
+                    c1.collideStop(c2);
                 }
             }
             // iterate through all objects

@@ -65,6 +65,24 @@ export default class PhysicsComponent {
         this.velocity.z = dir.y * this.maxSpeed; // "y" refers to second value of new Vector2, aka "z"
       }
     }
+    if (this.externalAccelerationFactor && this.externalAccelerationDirection) {
+      let vExternal = this.externalAccelerationDirection.multiplyScalar(this.externalAccelerationFactor).multiplyScalar(dt);
+      let vf = this.velocity.clone();
+      vf.add(vExternal);
+      
+      let vfx = vf.x;
+      let vfz = vf.z;
+      let dir = new THREE.Vector2(vfx, vfz).normalize();
+      let mag = Math.sqrt(vfx*vfx + vfz*vfz);
+
+      if (mag <= this.maxSpeed) {
+        this.velocity.x = vfx;
+        this.velocity.z = vfz;
+      } else {
+        this.velocity.x = dir.x * this.maxSpeed;
+        this.velocity.z = dir.y * this.maxSpeed; // "y" refers to second value of new Vector2, aka "z"
+      }
+    }
   }
 
   updatePosition(dt) {
@@ -72,8 +90,28 @@ export default class PhysicsComponent {
     this.transformComponent.addPos(d);
   }
 
-  bounce() {
-    this.velocity.multiplyScalar(-1); // TODO This doesn't work properly lol
+  bounce(amount) {
+    this.velocity.multiplyScalar(-1); 
+    this.updatePosition(amount);
+    // TODO This doesn't work properly lol
+  }
+
+  accelerate() {
+    this.accelerating = true;
+  }
+
+  stopAccelerating() {
+    this.accelerating = false;
+  }
+
+  externalAccelerate(factor, direction) {
+    this.externalAccelerationFactor = factor;
+    this.externalAccelerationDirection = direction;
+  }
+
+  stopExternalAcceleration() {
+    this.externalAccelerationFactor = null;
+    this.externalAccelerationDirection = null;
   }
 
 }

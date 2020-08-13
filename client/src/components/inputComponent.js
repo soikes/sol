@@ -7,9 +7,9 @@ export default class InputComponent {
 
   update() {
     if (this.input.forwardPressed()) {
-      this.physics.accelerating = true;
+      this.physics.accelerate();
     } else {
-      this.physics.accelerating = false;
+      this.physics.stopAccelerating();
     }
     
     if (this.input.turnLeftPressed()) {

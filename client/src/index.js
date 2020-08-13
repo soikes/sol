@@ -23,7 +23,7 @@ window.onload = function() {
   var planet = Planet.build(game.graphics);
   game.spawn(planet);
 
-  var sun = Sun.build(game.graphics);
+  var sun = Sun.build(game.graphics, game.world);
   game.spawn(sun);
 
   // var alight = new THREE.AmbientLight();
