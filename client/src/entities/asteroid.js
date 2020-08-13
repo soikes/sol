@@ -26,7 +26,7 @@ export default class Asteroid {
         // asteroidCollision.onCollisionStop(asteroidCollisionBounce.collideStop.bind(asteroidCollisionBounce));
         // world.addCollider(asteroidCollision);
 
-        let asteroidGravityEffect = new GravityEffectComponent(asteroidTransform, 6);
+        let asteroidGravityEffect = new GravityEffectComponent(asteroidTransform, 10);
         let asteroidGravityCollision = new CollisionComponent(
             asteroidGraphics.object(), 
             asteroidTransform, 
