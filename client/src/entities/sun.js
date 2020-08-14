@@ -25,7 +25,7 @@ export default class Sun {
             // sunTransform.pos.clone().sub(new THREE.Vector3(0, 0, sphere.radius))
         ];
         for (let i = 0; i < points.length; i++) {
-            let light = new THREE.PointLight(0xffffff, 1, 0, 2);
+            let light = new THREE.PointLight(0xffffff, 1.3, 0, 2);
             light.position.copy(points[i]);
             light.castShadow = true;
             // light.add(sunGraphics.object());

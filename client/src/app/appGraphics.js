@@ -2,7 +2,7 @@ import * as THREE from 'three';
 
 export default class AppGraphics {
   constructor(container) {
-    this.cameraDist = 30;
+    this.cameraDist = 35;
     const renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
     container.appendChild(renderer.domElement);
