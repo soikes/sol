@@ -21,5 +21,7 @@ export default class InputComponent {
     } else {
       this.physics.rotating = false;
     }
+
+    this.input.updateMouseIntersects();
   }
 }

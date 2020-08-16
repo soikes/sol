@@ -17,7 +17,7 @@ export default class AppWorld {
                 let c2 = this.colliders[j];
                 if (c1.intersects(c2)) {
                     c1.collideStart(c2);
-                    console.log(`${i} collided with ${j}`);
+                    //console.log(`${i} collided with ${j}`);
                 } else {
                     c1.collideStop(c2);
                 }

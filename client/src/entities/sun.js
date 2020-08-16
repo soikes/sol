@@ -28,7 +28,7 @@ export default class Sun {
             let light = new THREE.PointLight(0xffffff, 1.3, 0, 2);
             light.position.copy(points[i]);
             light.castShadow = true;
-            // light.add(sunGraphics.object());
+            // light.add(sunGraphics.graphicsObject());
             graphics.addToScene(light);
             var sphereSize = 1;
             var pointLightHelper = new THREE.PointLightHelper(light, sphereSize);
@@ -42,7 +42,7 @@ export default class Sun {
         
         let sunCollisionDmg = new CollisionDamageComponent(3);
         let sunCollision = new CollisionComponent(
-            sunGraphics.object(), 
+            sunGraphics.graphicsObject(), 
             sunTransform, 
             graphics);
         sunCollision.onCollisionStart(sunCollisionDmg.collideStart.bind(sunCollisionDmg));

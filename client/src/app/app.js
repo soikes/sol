@@ -6,10 +6,10 @@ import AppWorld from './appWorld';
 export default class App {
   constructor(container, hud) {
     this.graphics = new AppGraphics(container);
-    this.input = new AppInput();
     this.hud = new AppHud(hud);
     this.world = new AppWorld();
     this.entities = [];
+    this.input = new AppInput(this.graphics.camera, this.entities);
     this.configure();
   }
 

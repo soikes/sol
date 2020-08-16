@@ -28,7 +28,7 @@ export default class Asteroid {
 
         let asteroidGravityEffect = new GravityEffectComponent(asteroidTransform, 10);
         let asteroidGravityCollision = new CollisionComponent(
-            asteroidGraphics.object(), 
+            asteroidGraphics.graphicsObject(), 
             asteroidTransform, 
             graphics,
             0.4 //TODO this does not scale, it ADDs X to the size... wrong
