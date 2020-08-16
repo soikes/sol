@@ -43,12 +43,46 @@ export default class AppInput {
     this.raycaster.setFromCamera(this.mouse, this.camera);
     let components = this.entities.map(entity => entity.getComponentThatCan("graphicsObject"));
     let objects = components.map(entity => entity.graphicsObject());
-    this.intersects = this.raycaster.intersectObjects(objects);
+    this.intersects = this.raycaster.intersectObjects(objects).map(i => i.object.id);
+    // let diff = this.lastIntersects
+    //   .filter(i => !this.intersects.includes(i))
+    //   .concat(this.intersects.filter(i => !this.lastIntersects.includes(i)));
 
-    for ( var i = 0; i < this.intersects.length; i++ ) {
-      this.intersects[i].object.material.color.set(0xff0000);
-      // console.log("object mouseover");
+    if (this.intersects.length > 0 ) {
+      let a = this.lastIntersects.filter(i => !this.intersects.includes(i));
+      let b = this.intersects.filter(i => !this.lastIntersects.includes(i));
+
+      // at t = 1:  a = [] b = [], diff = []
+      // at t = 2:  a = [] b = [obj], diff = [obj]
+      // at t = 3:  a = [obj] b = [obj] diff = []
+
+      let diff = a.concat(b);
+
+      if (diff.length > 0) {
+        let intersected = diff[0];
+        for (let i = 0; i < components.length; i++) {
+          if (intersected === components[i].graphicsObject().id) {
+            console.log(`mouse is over component ${components[i]}`);
+          }
+        }
+      }
+
+      this.lastIntersects = this.intersects;
+    } else {
+      for (let i = 0; i < this.lastIntersects; i++) {
+        for (let j = 0; j < components.length; j++) {
+          if (this.lastIntersects[i] === components[j].graphicsObject().id) {
+            console.log(`mouse stopped being over component ${components[j]}`);
+          }
+        }
+      }
+      this.lastIntersects.length = 0;
     }
+
+    // for ( var i = 0; i < this.intersects.length; i++ ) {
+    //   this.intersects[i].object.material.color.set(0xff0000);
+    //   // console.log("object mouseover");
+    // }
   }
 
   forwardPressed() {
