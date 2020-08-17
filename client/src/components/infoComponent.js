@@ -1,5 +1,5 @@
 export default class InfoComponent {
-    constructor() {
-
+    constructor(name) {
+        this.name = name;
     }
 }

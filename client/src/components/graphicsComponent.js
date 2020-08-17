@@ -5,6 +5,7 @@ export default class GraphicsComponent {
     this.graphics.addToScene(this.obj);
     this.transform = transform;
     this.offset = offset;
+    this.update();
   }
 
   update() {

@@ -4,15 +4,17 @@ import TransformComponent from '../components/transformComponent';
 import GameObject from './gameObject';
 import CollisionDamageComponent from '../components/collisionDamageComponent';
 import CollisionComponent from '../components/collisionComponent';
+import MouseOverComponent from '../components/mouseOverComponent';
+import GraphicsEffectsComponent from '../components/graphicsEffectsComponent';
 
 export default class Sun {
     static build(graphics, world) {
-        var sunTransform = new TransformComponent(new THREE.Vector3(-200, 0, -200), new THREE.Vector3(), new THREE.Vector3());
+        let sunTransform = new TransformComponent(new THREE.Vector3(-200, 0, -200), new THREE.Vector3(), new THREE.Vector3());
 
-        var sunGeometry = new THREE.SphereGeometry(80, 48, 48);
-        var sunMaterial = new THREE.MeshLambertMaterial({ color: 0xffffff, emissive: 0xffffff });
-        var sunMesh = new THREE.Mesh(sunGeometry, sunMaterial);
-        var sunGraphics = new GraphicsComponent(graphics, sunMesh, sunTransform);
+        let sunGeometry = new THREE.SphereGeometry(80, 48, 48);
+        let sunMaterial = new THREE.MeshLambertMaterial({ color: 0xffffff, emissive: 0xffffff });
+        let sunMesh = new THREE.Mesh(sunGeometry, sunMaterial);
+        let sunGraphics = new GraphicsComponent(graphics, sunMesh, sunTransform);
         
         sunGeometry.computeBoundingSphere();
         let sphere = sunGeometry.boundingSphere;
@@ -30,13 +32,13 @@ export default class Sun {
             light.castShadow = true;
             // light.add(sunGraphics.graphicsObject());
             graphics.addToScene(light);
-            var sphereSize = 1;
-            var pointLightHelper = new THREE.PointLightHelper(light, sphereSize);
+            let sphereSize = 1;
+            let pointLightHelper = new THREE.PointLightHelper(light, sphereSize);
             graphics.addToScene(pointLightHelper);
         }
 
-        var ambLight = new THREE.AmbientLight(0xffffff, 0.05);
-        ambLight.position.set(-150, 10, -150);
+        let ambLight = new THREE.AmbientLight(0xffffff, 0.05);
+        // ambLight.position.set(-200, 10, -200);
         ambLight.castShadow = false;
         graphics.addToScene(ambLight);
         
@@ -49,6 +51,13 @@ export default class Sun {
         sunCollision.onCollisionStop(sunCollisionDmg.collideStop.bind(sunCollisionDmg));
         world.addCollider(sunCollision);
 
-        return new GameObject(sunTransform, sunGraphics, sunCollision, sunCollisionDmg);
+        // let sunMouseOver = new MouseOverComponent();
+        // sunMouseOver.onMouseOverStarted(() => {
+
+        // });
+
+        let sunEffects = new GraphicsEffectsComponent(sunGraphics, graphics);
+        sunEffects.glow();
+        return new GameObject(sunTransform, sunGraphics, sunCollision, sunCollisionDmg, sunEffects);
     }
 }

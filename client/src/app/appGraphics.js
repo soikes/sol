@@ -11,7 +11,7 @@ export default class AppGraphics {
     const scene = new THREE.Scene();
     this.scene = scene;
 
-    const aspect = window.innerWidth / window.innerHeight;
+    const aspect = window.innerWidth / window.innerHeight; //TODO viewing frustum is weird. planets get clipped when too close, it sucks
     let camera = new THREE.OrthographicCamera(- this.cameraDist * aspect, this.cameraDist * aspect, this.cameraDist, - this.cameraDist, 0, 1000);
     camera.position.set(this.cameraDist, this.cameraDist, this.cameraDist); // all components equal
     camera.lookAt(this.scene.position);
@@ -22,6 +22,10 @@ export default class AppGraphics {
 
   addToScene(obj) {
     this.scene.add(obj);
+  }
+
+  removeFromScene(obj) {
+    this.scene.remove(obj);
   }
 
   cameraFollow(pos) {
