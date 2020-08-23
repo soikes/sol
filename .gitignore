@@ -2,5 +2,5 @@ client/node_modules
 client/dist/game.js
 client/dist/index.js
 cockroach-data
-bin/*
-!bin/atom
+server/bin/*
+!server/bin/atom

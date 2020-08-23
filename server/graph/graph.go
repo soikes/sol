@@ -2,8 +2,6 @@ package graph
 
 import (
 	"fmt"
-
-
 )
 
 type SearchMethod int
@@ -113,7 +111,7 @@ func (g *Graph) searchBFS(value interface{}, root *Vertex, visited []*Vertex) *V
 }
 
 func (g *Graph) ShortestPath(value interface{}) []*Vertex {
-
+	return nil
 }
 
 func (g *Graph) ToString() string {
