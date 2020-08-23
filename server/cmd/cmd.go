@@ -1,5 +1,5 @@
 // TODO this is garbage and panics
-package main
+package cmd
 
 import (
 	"fmt"
