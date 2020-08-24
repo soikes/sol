@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"os"
 )
@@ -8,6 +9,7 @@ import (
 var usage = `usage: sol command`
 
 func main() {
+	ctx := context.Background()
 	// Register(`service`, cmdService)
 
 	args := os.Args[1:]
@@ -21,6 +23,8 @@ func main() {
 	switch cmd {
 	case `service`:
 		err = cmdService()
+	case `setup`:
+		err = cmdSetup(ctx)
 	default:
 		fmt.Printf("%s is not a valid command. exiting.\n", cmd)
 		os.Exit(1)

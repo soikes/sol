@@ -29,7 +29,7 @@ func main() {
 			fmt.Println(`build: builds targets. usage: atom build target [target2...]`)
 			os.Exit(1)
 		}
-		target := args[1]
+		target := args[1] //TODO accept multiple build targets
 		cmd, err := build(target)
 		if err != nil {
 			fmt.Println(err.Error())

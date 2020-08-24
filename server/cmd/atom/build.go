@@ -8,7 +8,7 @@ import (
 
 var buildTargets = `all sol`
 
-func build(target string) (*exec.Cmd, error) {
+func build(target string) (*exec.Cmd, error) { //TODO plumb contexts
 	switch target {
 	case `all`:
 		return buildAll()
