@@ -1,5 +1,9 @@
 package client
 
+import (
+	"context"
+)
+
 type Hub struct {
 	clients		map[*Client]bool
 	incoming	chan []byte
@@ -18,7 +22,7 @@ func NewHub() *Hub {
 	}
 }
 
-func (h *Hub) Run() {
+func (h *Hub) Run(ctx context.Context) error {
 	for {
 		select {
 		case client := <-h.register:
@@ -28,6 +32,8 @@ func (h *Hub) Run() {
 				delete(h.clients, client)
 				close(client.outgoing)
 			}
+		case <-ctx.Done():
+			return ctx.Err()
 		}
 	}
 }

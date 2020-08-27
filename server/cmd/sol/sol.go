@@ -22,7 +22,7 @@ func main() {
 	var err error
 	switch cmd {
 	case `service`:
-		err = cmdService()
+		err = cmdService(ctx)
 	case `setup`:
 		err = cmdSetup(ctx)
 	default:
