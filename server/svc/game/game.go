@@ -1,10 +1,10 @@
-package service
+package game
 
 import (
 	"soikke.li/sol"
 )
 
-type Service struct {
+type Config struct {
 	entities []sol.Entity
 	systems  []sol.System
 }
@@ -13,6 +13,6 @@ func Init() {
 	
 }
 
-func (s *Service) Run() error {
+func (c *Config) Run() error {
 	return nil
 }

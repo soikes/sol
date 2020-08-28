@@ -4,17 +4,14 @@ import(
 	"context"
 	"fmt"
 
-	"soikke.li/sol/service"
+	"soikke.li/sol"
 	// "soikke.li/sol/graph"
 )
 
-func cmdService(ctx context.Context) error {
+func cmdService(ctx context.Context, cfg *sol.Config) error {
 	fmt.Println(`running service`)
-	// svc := service.Service{}
-	// svc.Run()
 
-	w := service.Web{Port: 9999}
-	w.Run(ctx)
+	cfg.Sol.Web.Run(ctx)
 
 	return nil
 
