@@ -3,9 +3,9 @@ package main
 import (
 	"context"
 
-	"soikke.li/sol"
+	"soikke.li/sol/config"
 )
 
-func cmdSetup(ctx context.Context, cfg *sol.Config) error {
+func cmdSetup(ctx context.Context, cfg *config.Config) error {
 	return cfg.Crdb.SetupSchema(ctx)
 }

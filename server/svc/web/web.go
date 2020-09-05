@@ -1,7 +1,7 @@
 package web
 
 import (
-	"soikke.li/sol/client"
+	"soikke.li/sol/svc/client"
 
 	"context"
 	"fmt"
@@ -11,17 +11,23 @@ import (
 )
 
 type Config struct {
-	Port int `yaml:port`
+	Port int
+	TokenSecret string `yaml:"token_secret"`
+
+	db Datastore
 }
 
-func (c *Config) Init() error { return nil }
+func (cfg *Config) InitDB(db Datastore) {
+	cfg.db = db
+}
 
-func (c *Config) Run(ctx context.Context) {
+func (cfg *Config) Run(ctx context.Context) {
 	h := client.NewHub()
 	go h.Run(ctx)
 	http.Handle("/", http.FileServer(http.Dir("../client/dist")))
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
 		client.ServeWs(w, r, h)
 	})
-	log.Fatal().Err(http.ListenAndServe(fmt.Sprintf(`:%d`, c.Port), nil))
+	http.HandleFunc("/users", cfg.UsersHandler)
+	log.Fatal().Err(http.ListenAndServe(fmt.Sprintf(`:%d`, cfg.Port), nil))
 }

@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"os"
 
-	"soikke.li/sol"
+	"soikke.li/sol/config"
+
+	"github.com/rs/zerolog/log"
 )
 
 var usage = `usage: sol command`
@@ -13,10 +15,14 @@ var usage = `usage: sol command`
 func main() {
 	ctx := context.Background()
 	// Register(`service`, cmdService)
-	cfg := &sol.Config{}
-	err := cfg.Load(``)
+	cfg := &config.Config{}
+	err := cfg.Load(`etc/local.yml`)
 	if err != nil {
-		panic(err)
+		log.Fatal().Err(err).Msg(`failed to load configuration file`)
+	}
+	err = cfg.Init()
+	if err != nil {
+		log.Fatal().Err(err).Msg(`failed to initialize sol config`)
 	}
 
 	args := os.Args[1:]

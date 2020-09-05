@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+
+	"github.com/rs/zerolog/log"
 )
 
 var services = `crdb sol`
@@ -14,7 +16,7 @@ func start(ctx context.Context, svcs []string) error {
 	ctx, cancel := context.WithCancel(ctx)
 	var cmds []*exec.Cmd
 	for _, svc := range svcs {
-		fmt.Printf("attempting to start %s...\n", svc)
+		log.Info().Str(`service`, svc).Msg(`attempting to start`)
 		switch svc {
 		case `crdb`:
 			cmd, err := startCRDB(ctx)
@@ -24,7 +26,7 @@ func start(ctx context.Context, svcs []string) error {
 			}
 			cmds = append(cmds, cmd)
 		case `sol`:
-			cmd, err := startSol(ctx)
+			cmd, err := startSol(ctx, `service`)
 			if err != nil {
 				cancel()
 				return err
@@ -86,7 +88,7 @@ func startCRDB(ctx context.Context) (*exec.Cmd, error) {
 func startSol(ctx context.Context, args ...string) (*exec.Cmd, error) {
 	cmd := exec.CommandContext(
 		ctx,
-		`sol`,
+		`bin/sol`,
 		args...,
 	)
 	cmd.Stdout = os.Stdout

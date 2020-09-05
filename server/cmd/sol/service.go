@@ -2,17 +2,18 @@ package main
 
 import(
 	"context"
-	"fmt"
 
-	"soikke.li/sol"
+	"soikke.li/sol/config"
 	// "soikke.li/sol/graph"
+
+	"github.com/rs/zerolog/log"
 )
 
-func cmdService(ctx context.Context, cfg *sol.Config) error {
-	fmt.Println(`running service`)
+func cmdService(ctx context.Context, cfg *config.Config) error {
+	log.Info().Msg(`running service`)
 
 	cfg.Sol.Web.Run(ctx)
-
+	
 	return nil
 
 	// g := graph.Graph{}

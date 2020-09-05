@@ -1,4 +1,11 @@
 ---
+crdb:
+  host: localhost
+  port: 26257
+  user: root
+  dbname: sol
 sol:
   web:
     port: 9999
+log:
+  level: debug
