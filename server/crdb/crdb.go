@@ -12,6 +12,7 @@ import (
 
 var (
 	ErrNotInitialized = errors.New(`db has not been initialized`)
+	ErrNoRows         = errors.New(`no rows in result set`)
 )
 
 type Config struct {
@@ -82,4 +83,13 @@ func (c *Config) ExecContext(ctx context.Context, stmt string, args ...interface
 		log.Error().Err(err).Str(`stmt`, stmt).Msg(`failed to execute statement`)
 	}
 	return err
+}
+
+func (c *Config) QueryContext(ctx context.Context, stmt string, args ...interface{}) (*sql.Rows, error) {
+	rows, err := c.db.QueryContext(ctx, stmt, args...)
+	if err != nil {
+		log.Error().Err(err).Str(`stmt`, stmt).Msg(`failed to execute query`)
+		return nil, err
+	}
+	return rows, nil
 }

@@ -7,5 +7,6 @@ crdb:
 sol:
   web:
     port: 9999
+    token_secret: flub
 log:
   level: debug

@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"path"
 
 	"github.com/rs/zerolog/log"
 )
@@ -63,7 +64,7 @@ func waitForCmds(ctx context.Context, cmds []*exec.Cmd) error {
 	if len(errs) > 0 {
 		err = fmt.Errorf(`multiple errors: `)
 		for _, e := range errs {
-			err = errors.New(fmt.Sprint(err.Error(), e.Error()))
+			err = errors.New(fmt.Sprint(err.Error(), e.Error(), `, `))
 		}
 	}
 	return err
@@ -75,6 +76,11 @@ func startCRDB(ctx context.Context) (*exec.Cmd, error) {
 		`cockroach`,
 		`start-single-node`,
 		`--insecure`,
+		// `--background`, //TODO wtf, pid-file fixed this then stopped working
+		`--store`,
+		path.Join(os.TempDir(), `cockroach-data`),
+		`--pid-file`,
+		path.Join(os.TempDir(), `cockroach.pid`),
 	)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
