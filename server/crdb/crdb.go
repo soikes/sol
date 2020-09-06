@@ -2,10 +2,10 @@ package crdb
 
 import (
 	"context"
-	"database/sql"
 	"errors"
 	"fmt"
 
+	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 	"github.com/rs/zerolog/log"
 )
@@ -21,7 +21,7 @@ type Config struct {
 	User string
 	DbName string
 
-	db *sql.DB
+	db *sqlx.DB
 	initialized bool
 }
 
@@ -36,7 +36,7 @@ func (c *Config) InitWithDb(name string) error {
 		psqlInfo = psqlInfo + fmt.Sprintf(` dbname=%s`, name)
 	}
 	log.Info().Str(`connection`, psqlInfo).Msg(`connecting to database`)
-	db, err := sql.Open(`postgres`, psqlInfo)
+	db, err := sqlx.Open(`postgres`, psqlInfo)
 	if err != nil {
 		return fmt.Errorf(`failed to connect to database: %w`, err)
 	}
@@ -85,8 +85,8 @@ func (c *Config) ExecContext(ctx context.Context, stmt string, args ...interface
 	return err
 }
 
-func (c *Config) QueryContext(ctx context.Context, stmt string, args ...interface{}) (*sql.Rows, error) {
-	rows, err := c.db.QueryContext(ctx, stmt, args...)
+func (c *Config) QueryContext(ctx context.Context, stmt string, args ...interface{}) (*sqlx.Rows, error) {
+	rows, err := c.db.QueryxContext(ctx, stmt, args...)
 	if err != nil {
 		log.Error().Err(err).Str(`stmt`, stmt).Msg(`failed to execute query`)
 		return nil, err

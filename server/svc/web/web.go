@@ -35,6 +35,7 @@ func (cfg *Config) Run(ctx context.Context) {
 		client.ServeWs(w, r, h)
 	})
 	http.HandleFunc(`/users`, cfg.UsersHandler)
+	http.HandleFunc(`/users/`, cfg.UsersHandler)
 	http.HandleFunc(`/login`, cfg.LoginHandler)
 	log.Fatal().Err(http.ListenAndServe(fmt.Sprintf(`:%d`, cfg.Port), nil))
 }

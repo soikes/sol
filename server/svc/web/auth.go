@@ -5,13 +5,13 @@ import (
 	"time"
 
 	jwt "github.com/dgrijalva/jwt-go"
-
-	"github.com/rs/zerolog/log"
+	// "github.com/rs/zerolog/log"
 )
 
-func (cfg *Config) GrantToken(user string) (string, error) {
+func (cfg *Config) GrantToken(id, email string) (string, error) {
 	tkn := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"user": user,
+		"id": id,
+		"email": email,
 		"nbf": time.Now().Unix(),
 		"exp": time.Now().Add(1 * time.Hour).Unix(),
 	})

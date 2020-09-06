@@ -5,6 +5,7 @@ import (
 )
 
 type Datastore interface {
-	CreateUser(context.Context, string, string, string) error
+	CreateUser(context.Context, string, string, string) (string, error)
 	GetUserPassword(context.Context, string) (string, error)
+	GetUserInfo(context.Context, string, *User) error
 }
