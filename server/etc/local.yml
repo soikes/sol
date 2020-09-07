@@ -10,3 +10,4 @@ sol:
     token_secret: flub
 log:
   level: debug
+  output: stderr

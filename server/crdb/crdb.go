@@ -5,9 +5,11 @@ import (
 	"errors"
 	"fmt"
 
+	"soikke.li/sol"
+	"soikke.li/sol/log"
+
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
-	"github.com/rs/zerolog/log"
 )
 
 var (
@@ -16,6 +18,8 @@ var (
 )
 
 type Config struct {
+	sol.Component
+
 	Host string
 	Port string
 	User string
@@ -25,17 +29,21 @@ type Config struct {
 	initialized bool
 }
 
-func (c *Config) Init() error {
-	return c.InitWithDb(c.DbName)
+func (cfg *Config) Init(log log.Logger) {
+	cfg.Component.Init(`crdb`, log)
 }
 
-func (c *Config) InitWithDb(name string) error {
+func (cfg *Config) InitDB() error {
+	return cfg.InitWithDb(cfg.DbName)
+}
+
+func (cfg *Config) InitWithDb(name string) error {
 	psqlInfo := fmt.Sprintf(`host=%s port=%s user=%s sslmode=disable`,
-		c.Host, c.Port, c.User)
+		cfg.Host, cfg.Port, cfg.User)
 	if name != `` {
 		psqlInfo = psqlInfo + fmt.Sprintf(` dbname=%s`, name)
 	}
-	log.Info().Str(`connection`, psqlInfo).Msg(`connecting to database`)
+	cfg.Log.Info().Str(`connection`, psqlInfo).Msg(`connecting to database`)
 	db, err := sqlx.Open(`postgres`, psqlInfo)
 	if err != nil {
 		return fmt.Errorf(`failed to connect to database: %w`, err)
@@ -44,51 +52,51 @@ func (c *Config) InitWithDb(name string) error {
 	if err != nil {
 		return fmt.Errorf(`failed to ping database: %w`, err)
 	}
-	c.db = db
-	c.initialized = true
-	log.Info().Msg(`connected to database`)
+	cfg.db = db
+	cfg.initialized = true
+	cfg.Log.Info().Msg(`connected to database`)
 	return nil
 }
 
-func (c *Config) Close() error {
-	return c.db.Close()
+func (cfg *Config) Close() error {
+	return cfg.db.Close()
 }
 
-func (c *Config) UseDatabase(ctx context.Context, name string) error {
-	if !c.initialized {
+func (cfg *Config) UseDatabase(ctx context.Context, name string) error {
+	if !cfg.initialized {
 		return ErrNotInitialized
 	}
-	return c.ExecContext(ctx, fmt.Sprint(`USE DATABASE `), name)
+	return cfg.ExecContext(ctx, fmt.Sprint(`USE DATABASE `), name)
 }
 
-func (c *Config) CreateDatabase(ctx context.Context, name string) error {
-	return c.ExecContext(ctx, fmt.Sprint(`CREATE DATABASE IF NOT EXISTS `, name))
+func (cfg *Config) CreateDatabase(ctx context.Context, name string) error {
+	return cfg.ExecContext(ctx, fmt.Sprint(`CREATE DATABASE IF NOT EXISTS `, name))
 }
 
-func (c *Config) CreateTable(ctx context.Context, name string) error {
-	return c.ExecContext(ctx, fmt.Sprint(`CREATE TABLE IF NOT EXISTS `, name))
+func (cfg *Config) CreateTable(ctx context.Context, name string) error {
+	return cfg.ExecContext(ctx, fmt.Sprint(`CREATE TABLE IF NOT EXISTS `, name))
 }
 
-func (c *Config) CreateDBUser(ctx context.Context, name string) error {
-	return c.ExecContext(ctx, `CREATE USER IF NOT EXISTS $1`, name)
+func (cfg *Config) CreateDBUser(ctx context.Context, name string) error {
+	return cfg.ExecContext(ctx, `CREATE USER IF NOT EXISTS $1`, name)
 }
 
-func (c *Config) DropDatabase(ctx context.Context, name string) error {
-	return c.ExecContext(ctx, fmt.Sprint(`DROP DATABASE IF EXISTS `, name))
+func (cfg *Config) DropDatabase(ctx context.Context, name string) error {
+	return cfg.ExecContext(ctx, fmt.Sprint(`DROP DATABASE IF EXISTS `, name))
 }
 
-func (c *Config) ExecContext(ctx context.Context, stmt string, args ...interface{}) error {
-	_, err := c.db.ExecContext(ctx, stmt, args...)
+func (cfg *Config) ExecContext(ctx context.Context, stmt string, args ...interface{}) error {
+	_, err := cfg.db.ExecContext(ctx, stmt, args...)
 	if err != nil {
-		log.Error().Err(err).Str(`stmt`, stmt).Msg(`failed to execute statement`)
+		cfg.Log.Error().Err(err).Str(`stmt`, stmt).Msg(`failed to execute statement`)
 	}
 	return err
 }
 
-func (c *Config) QueryContext(ctx context.Context, stmt string, args ...interface{}) (*sqlx.Rows, error) {
-	rows, err := c.db.QueryxContext(ctx, stmt, args...)
+func (cfg *Config) QueryContext(ctx context.Context, stmt string, args ...interface{}) (*sqlx.Rows, error) {
+	rows, err := cfg.db.QueryxContext(ctx, stmt, args...)
 	if err != nil {
-		log.Error().Err(err).Str(`stmt`, stmt).Msg(`failed to execute query`)
+		cfg.Log.Error().Err(err).Str(`stmt`, stmt).Msg(`failed to execute query`)
 		return nil, err
 	}
 	return rows, nil

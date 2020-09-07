@@ -3,17 +3,17 @@ package config
 import (
 	"io/ioutil"
 
-	"soikke.li/sol/svc/web"
 	"soikke.li/sol/crdb"
+	"soikke.li/sol/log"
+	"soikke.li/sol/svc/web"
 
 	"gopkg.in/yaml.v2"
-
-	// "github.com/rs/zerolog/log"
 )
 
 var defaultPath = `etc/local.yml`
 
 type Config struct {
+	Log log.Config `yaml:"log"`
 	Sol struct {
 		Web web.Config `yaml:"web"`
 	} `yaml:"sol"`
@@ -37,10 +37,16 @@ func (cfg *Config) Load(path string) error {
 }
 
 func (cfg *Config) Init() error {
-	err := cfg.Crdb.Init()
-	if err != nil {
-		return err
+	log := cfg.Log.Init()
+	cfg.Crdb.Init(log)
+	if err := cfg.Crdb.InitDB(); err != nil {
+		log.Fatal().Err(err).Msg(`failed to initialize crdb`)
 	}
+	cfg.Sol.Web.Init(log)
 	cfg.Sol.Web.InitDB(&cfg.Crdb)
 	return nil
+}
+
+type Initializer interface {
+	Init(log.Config)
 }

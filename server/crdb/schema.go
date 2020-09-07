@@ -2,30 +2,28 @@ package crdb
 
 import (
 	"context"
-
-	"github.com/rs/zerolog/log"
 )
 
-func (c *Config) SetupSchema(ctx context.Context) error {
-	log.Info().Str(`dbname`, c.DbName).Msg(`recreating database`)
-	err := c.DropDatabase(ctx, c.DbName)
+func (cfg *Config) SetupSchema(ctx context.Context) error {
+	cfg.Log.Info().Str(`dbname`, cfg.DbName).Msg(`recreating database`)
+	err := cfg.DropDatabase(ctx, cfg.DbName)
 	if err != nil {
 		return err
 	}
-	err = c.CreateDatabase(ctx, c.DbName)
+	err = cfg.CreateDatabase(ctx, cfg.DbName)
 	if err != nil {
 		return err
 	}
-	err = c.Close()
+	err = cfg.Close()
 	if err != nil {
 		return err
 	}
-	err = c.Init()
+	err = cfg.InitDB()
 	if err != nil {
 		return err
 	}
-	defer c.Close()
-	_, err = c.db.ExecContext(ctx, createUsersStmt)
+	defer cfg.Close()
+	_, err = cfg.db.ExecContext(ctx, createUsersTableStmt)
 	if err != nil {
 		return err
 	}
