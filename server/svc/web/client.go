@@ -1,4 +1,4 @@
-package client
+package web
 
 import (
 	"net/http"
@@ -40,7 +40,7 @@ func ServeWs(w http.ResponseWriter, r *http.Request, h *Hub) {
 		http.Error(w, err.Error(), 400)
 		return
 	}
-	c.hub.register <- &c
+	c.hub.Register <- &c
 
 	go c.readPump()
 	go c.writePump()
@@ -48,7 +48,7 @@ func ServeWs(w http.ResponseWriter, r *http.Request, h *Hub) {
 
 func (c *Client) readPump() {
 	defer func() {
-		c.hub.deregister <- c
+		c.hub.Deregister <- c
 		c.conn.Close()
 	}()
 	for {
@@ -60,12 +60,13 @@ func (c *Client) readPump() {
 			log.Info().Err(err).Msg(`client disconnected`)
 			break
 		}
-		c.hub.incoming <- message
+		log.Info().Str(`msg`, string(message)).Msg(`got message`)
+		c.hub.Incoming <- message
 	}
 }
 
 func (c *Client) writePump() {
-	ticker := time.NewTicker(time.Second)
+	ticker := time.NewTicker(10*time.Second)
 	defer func() {
 		ticker.Stop()
 		c.conn.Close()
@@ -77,6 +78,7 @@ func (c *Client) writePump() {
 			c.conn.SetWriteDeadline(time.Now().Add(10*time.Second))
 			if err := c.conn.WriteMessage(websocket.PingMessage, nil); err != nil {
 				log.Error().Err(err).Msg(`failed to ping client`)
+				c.hub.Deregister <- c
 				return
 			}
 		}

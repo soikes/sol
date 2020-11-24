@@ -34,14 +34,16 @@ func start(ctx context.Context, svcs []string) error {
 			}
 			cmds = append(cmds, cmd)
 		default:
+			cancel()
 			return fmt.Errorf(`%s is not a valid service. valid services are: %s`, svc, services)
 		}
 	}
-	return waitForCmds(ctx, cmds)
+	err := waitForCmds(ctx, cmds)
+	cancel()
+	return err
 }
 
 func waitForCmds(ctx context.Context, cmds []*exec.Cmd) error {
-	ctx, cancel := context.WithCancel(ctx)
 	var errs []error
 	done := make(chan error)
 	for _, cmd := range cmds {
@@ -49,7 +51,6 @@ func waitForCmds(ctx context.Context, cmds []*exec.Cmd) error {
 			err := cmd.Wait()
 			if err != nil {
 				err = fmt.Errorf(`service %s failed: %w`, cmd.Path, err)
-				cancel()
 			}
 			done<-err
 		}(cmd)

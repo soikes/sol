@@ -8,6 +8,7 @@ sol:
   web:
     port: 9999
     token_secret: flub
+    client_path: ../client/dist
 log:
   level: debug
   output: stderr

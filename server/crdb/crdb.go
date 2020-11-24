@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"time"
 
 	"soikke.li/sol"
 	"soikke.li/sol/log"
@@ -44,14 +45,32 @@ func (cfg *Config) InitWithDb(name string) error {
 		psqlInfo = psqlInfo + fmt.Sprintf(` dbname=%s`, name)
 	}
 	cfg.Log.Info().Str(`connection`, psqlInfo).Msg(`connecting to database`)
-	db, err := sqlx.Open(`postgres`, psqlInfo)
-	if err != nil {
-		return fmt.Errorf(`failed to connect to database: %w`, err)
+	var db *sqlx.DB
+	var err error
+
+	timeout := time.After(10*time.Second)
+	tick := time.Tick(time.Second)
+	connecting:
+	for {
+		select {
+		case <-tick:
+			db, err = sqlx.Open(`postgres`, psqlInfo)
+			if err != nil {
+				err = fmt.Errorf(`failed to connect to database: %w`, err)
+				break
+			}
+			err = db.Ping()
+			if err != nil {
+				err = fmt.Errorf(`failed to ping database: %w`, err)
+				break
+			}
+			break connecting
+		case <-timeout:
+			cfg.Log.Error().Err(err).Msg(`aborting connection to database after 10s`)
+			return err
+		}
 	}
-	err = db.Ping()
-	if err != nil {
-		return fmt.Errorf(`failed to ping database: %w`, err)
-	}
+
 	cfg.db = db
 	cfg.initialized = true
 	cfg.Log.Info().Msg(`connected to database`)

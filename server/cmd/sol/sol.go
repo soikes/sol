@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"os/signal"
+	"syscall"
 
 	"soikke.li/sol/config"
 
@@ -14,6 +16,7 @@ var usage = `usage: sol command`
 
 func main() {
 	ctx := context.Background()
+	ctx = handleSignals(ctx)
 	// Register(`service`, cmdService)
 	cfg := &config.Config{}
 	err := cfg.Load(`etc/local.yml`)
@@ -41,8 +44,20 @@ func main() {
 		fmt.Printf("%s is not a valid command. exiting.\n", cmd)
 		os.Exit(1)
 	}
+	<-ctx.Done()
+	log.Info().Str(`cmd`, cmd).Msg(`shutting down`)
 	if err != nil {
-		fmt.Printf(fmt.Sprintf("failed to run %s\n", err.Error()))
-		os.Exit(1)
+		log.Fatal().Err(err).Str(`cmd`, cmd).Msg(`failed to run`)
 	}
+}
+
+func handleSignals(ctx context.Context) context.Context {
+	ctx, cancel := context.WithCancel(ctx)
+	c := make(chan os.Signal)
+	signal.Notify(c, os.Interrupt, syscall.SIGINT)
+	go func() {
+		<-c
+		cancel()
+	}()
+	return ctx
 }

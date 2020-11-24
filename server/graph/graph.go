@@ -20,6 +20,7 @@ func (g *Graph) Count() int {
 }
 
 func (g *Graph) Add(v *Vertex) {
+	fmt.Println(`adding vertex: `, v)
 	g.vertices = append(g.vertices, v)
 }
 

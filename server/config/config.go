@@ -5,6 +5,7 @@ import (
 
 	"soikke.li/sol/crdb"
 	"soikke.li/sol/log"
+	"soikke.li/sol/svc/game"
 	"soikke.li/sol/svc/web"
 
 	"gopkg.in/yaml.v2"
@@ -16,6 +17,7 @@ type Config struct {
 	Log log.Config `yaml:"log"`
 	Sol struct {
 		Web web.Config `yaml:"web"`
+		Game game.Config `yaml:"game"`
 	} `yaml:"sol"`
 	Crdb crdb.Config `yaml:"crdb"`
 }
@@ -44,6 +46,7 @@ func (cfg *Config) Init() error {
 	}
 	cfg.Sol.Web.Init(log)
 	cfg.Sol.Web.InitDB(&cfg.Crdb)
+	cfg.Sol.Game.Init(log)
 	return nil
 }
 
