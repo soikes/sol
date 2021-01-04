@@ -12,7 +12,7 @@ import HealthComponent from '../components/healthComponent';
 import CollisionComponent from '../components/collisionComponent';
 
 export default class Ship {
-  static build(graphics, input, hud, world) {
+  static build(id, graphics, input, hud, world, network) {
     return new Promise((resolve, reject) => {
       let shipTf = new TransformComponent(new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3());
       let hudPosObserver = new Observable();
@@ -26,13 +26,13 @@ export default class Ship {
 
       let shipFollow = new CameraFollowComponent(shipTf, graphics);
       let shipPhys = new PhysicsComponent(new THREE.Vector3(), 15, 8, 0.05, shipTf);
-      let shipInput = new InputComponent(shipTf, input, shipPhys);
+      let shipInput = new InputComponent(shipTf, input, shipPhys, network);
       let loader = new GLTFLoader();
       loader.load( 'assets/ship.glb', function ( gltf ) {
        let shipGfx = new GraphicsComponent(graphics, gltf.scene, shipTf);
        let shipCollision = new CollisionComponent(shipGfx.graphicsObject(), shipTf, graphics);
        world.addCollider(shipCollision);
-        resolve(new GameObject(shipTf, shipGfx, shipFollow, shipInput, shipPhys, shipHealth, shipCollision));
+        resolve(new GameObject(id, shipTf, shipGfx, shipFollow, shipInput, shipPhys, shipHealth, shipCollision));
       }, undefined, function ( error ) {
         console.error( error );
         reject(error);

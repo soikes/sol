@@ -3,25 +3,27 @@ package components
 import (
 	"math"
 	"time"
+
 	// "time"
 
+	"github.com/rs/zerolog/log"
 	"soikke.li/sol/primitives"
 	// "soikke.li/sol/svc/core"
 )
 
 type Physics struct {
-	Velocity primitives.Vec3
-	MaxSpeed float64
+	Velocity primitives.Vec3 `json:"velocity"`
+	MaxSpeed float64         `json:"-"`
 
-	AccelerationFactor float64
-	accelerating bool
+	AccelerationFactor float64 `json:"-"`
+	accelerating       bool    `json:"-"`
 
-	RotationFactor float64
-	rotating bool
-	RotationDirection primitives.Vec3
-	RotationBuf primitives.Vec3
+	RotationFactor    float64         `json:"-"`
+	rotating          bool            `json:"-"`
+	RotationDirection primitives.Vec3 `json:"rotationDirection"`
+	RotationBuf       primitives.Vec3 `json:"-"`
 
-	Transform *Transform
+	Transform *Transform `json:"-"`
 }
 
 func NewPhysics(t *Transform) Physics {
@@ -45,23 +47,23 @@ func (p *Physics) ApplyRotation() {
 func (p *Physics) CalculateVelocity(dt time.Duration) {
 	if p.accelerating {
 		vix := p.Velocity.X
-		vfx := vix + (p.AccelerationFactor * math.Sin(p.Transform.Rotation.Y)) * float64(dt)
+		vfx := vix + (p.AccelerationFactor*math.Sin(p.Transform.Rotation.Y))*float64(dt)
 
 		viz := p.Velocity.Z
-		vfz := viz + (p.AccelerationFactor * math.Cos(p.Transform.Rotation.Y)) * float64(dt)
+		vfz := viz + (p.AccelerationFactor*math.Cos(p.Transform.Rotation.Y))*float64(dt)
 
 		dir := primitives.Vec2{X: vfx, Y: vfz}
 		mag := dir.Magnitude()
 		dir.Normalize()
-		
-		if (mag <= p.MaxSpeed) {
+
+		if mag <= p.MaxSpeed {
 			p.Velocity.X = vfx
 			p.Velocity.Z = vfz
 		} else {
 			p.Velocity.X = dir.X * p.MaxSpeed
 			p.Velocity.Z = dir.Y * p.MaxSpeed
 		}
-	}	
+	}
 }
 
 func (p *Physics) UpdatePosition(dt time.Duration) {
@@ -71,6 +73,7 @@ func (p *Physics) UpdatePosition(dt time.Duration) {
 }
 
 func (p *Physics) Accelerate() {
+	log.Info().Msg(`accelerating!`)
 	p.accelerating = true
 }
 

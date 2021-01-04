@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"os/exec"
 	"os"
+	"os/exec"
 )
 
 var buildTargets = `all sol`
@@ -64,9 +64,10 @@ func buildClient() (*exec.Cmd, error) {
 
 //TODO return slice of cmds
 func buildAll() (*exec.Cmd, error) {
-	// c, err := buildClient()
-	// if err != nil {
-	// 	return nil, err
-	// }
+	c, err := buildClient()
+	if err != nil {
+		return nil, err
+	}
+	c.Wait()
 	return buildSol()
 }

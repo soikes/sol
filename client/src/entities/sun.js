@@ -8,7 +8,7 @@ import MouseOverComponent from '../components/mouseOverComponent';
 import GraphicsEffectsComponent from '../components/graphicsEffectsComponent';
 
 export default class Sun {
-    static build(graphics, world) {
+    static build(id, graphics, world) {
         let sunTransform = new TransformComponent(new THREE.Vector3(-200, 0, -200), new THREE.Vector3(), new THREE.Vector3());
 
         let sunGeometry = new THREE.SphereGeometry(80, 48, 48);
@@ -58,6 +58,6 @@ export default class Sun {
 
         let sunEffects = new GraphicsEffectsComponent(sunGraphics, graphics);
         sunEffects.glow();
-        return new GameObject(sunTransform, sunGraphics, sunCollision, sunCollisionDmg, sunEffects);
+        return new GameObject(id, sunTransform, sunGraphics, sunCollision, sunCollisionDmg, sunEffects);
     }
 }

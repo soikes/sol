@@ -1,10 +1,10 @@
 import { Vector3 } from 'three';
 
 export default class GameObject {
-  constructor(...components) {
+  constructor(id, ...components) {
     components.forEach(component => component.gameObject = this);
     this.components = components;
-    this.id = 1;
+    this.id = id;
   }
   
   update(dt) {

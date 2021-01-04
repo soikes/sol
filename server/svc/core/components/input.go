@@ -3,16 +3,22 @@ package components
 import (
 	"time"
 
+	"github.com/rs/zerolog/log"
 	"soikke.li/sol/message"
 )
 
 type Input struct {
-	Physics Physics
+	Physics *Physics
 
 	pending message.Input
 }
 
+func NewInput(p *Physics) Input {
+	return Input{Physics: p}
+}
+
 func (i *Input) Update(dt time.Duration) {
+	log.Info().Interface(`pending`, i.pending).Msg(`update`)
 	if i.pending.ForwardPress {
 		i.Physics.Accelerate()
 	} else {
@@ -30,5 +36,5 @@ func (i *Input) Update(dt time.Duration) {
 }
 
 func (i *Input) QueueInput(m message.Input) {
-	i.pending = m
+	i.pending = m //TODO make this a queue that drops messages that are too old - prevent late input from being processed, makes driving suck
 }

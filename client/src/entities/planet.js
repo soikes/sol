@@ -4,7 +4,7 @@ import TransformComponent from '../components/transformComponent';
 import GameObject from './gameObject';
 
 export default class Planet {
-    static build(graphics) {
+    static build(id, graphics) {
         var pt = new TransformComponent(new THREE.Vector3(-80, -100, -40), new THREE.Vector3(), new THREE.Vector3());
         var pg = new THREE.SphereGeometry(40, 38, 38);
         var pm = new THREE.MeshStandardMaterial({ color: 0xfff8c7 });
@@ -22,6 +22,6 @@ export default class Planet {
 
         var sgx = new GraphicsComponent(graphics, rms, rt, new THREE.Vector3());
 
-        return new GameObject(pt, pgx, rt, sgx);
+        return new GameObject(id, pt, pgx, rt, sgx);
     }
 }

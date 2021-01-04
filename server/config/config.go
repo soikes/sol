@@ -16,7 +16,7 @@ var defaultPath = `etc/local.yml`
 type Config struct {
 	Log log.Config `yaml:"log"`
 	Sol struct {
-		Web web.Config `yaml:"web"`
+		Web  web.Config  `yaml:"web"`
 		Game game.Config `yaml:"game"`
 	} `yaml:"sol"`
 	Crdb crdb.Config `yaml:"crdb"`
@@ -44,9 +44,9 @@ func (cfg *Config) Init() error {
 	if err := cfg.Crdb.InitDB(); err != nil {
 		log.Fatal().Err(err).Msg(`failed to initialize crdb`)
 	}
+	cfg.Sol.Game.Init(log)
 	cfg.Sol.Web.Init(log)
 	cfg.Sol.Web.InitDB(&cfg.Crdb)
-	cfg.Sol.Game.Init(log)
 	return nil
 }
 

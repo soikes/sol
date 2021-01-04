@@ -38,6 +38,13 @@ export default class TransformComponent {
     this.changed = true;
   }
 
+  setPos(x, y, z) {
+    this.pos.setX(x)
+    this.pos.setY(y)
+    this.pos.setZ(z)
+    this.changed = true;
+  }
+
   update() {
     if (this.changed) {
       this.notify(this.pos);
@@ -47,5 +54,9 @@ export default class TransformComponent {
 
   position() {
     return this.pos;
+  }
+
+  listenToNetwork(network) {
+    this.network = network;
   }
 }

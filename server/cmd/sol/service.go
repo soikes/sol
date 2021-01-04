@@ -41,9 +41,8 @@ func cmdService(ctx context.Context, cfg *config.Config) error {
 	// 	// u := universe.NewUniverse(100)
 	// 	// fmt.Println(u.StarSystems.ToString())
 	// }()
-	
-	h := cfg.Sol.Web.StartHub(ctx)
-	go cfg.Sol.Web.StartHTTP(ctx, h)
-	go cfg.Sol.Game.Run(ctx, h)
+
+	go cfg.Sol.Game.Run(ctx)
+	go cfg.Sol.Web.StartHTTP(ctx)
 	return nil
 }

@@ -8,22 +8,23 @@ import Sun from './entities/sun';
 window.onload = function() {
   var game = new App(
     document.querySelector("#app #rcontainer"), 
-    document.querySelector("#app #hud")
+    document.querySelector("#app #hud"),
+    document.location.host
   );
 
   var axesHelper = new THREE.AxesHelper(5);
   game.graphics.addToScene(axesHelper);
 
-  Ship.build(game.graphics, game.input, game.hud, game.world)
-    .then(ship => { game.spawn(ship); });
+  // Ship.build('1', game.graphics, game.input, game.hud, game.world, game.network)
+  //   .then(ship => { game.spawn(ship); });
   
-  let asteroid = Asteroid.build(game.graphics, game.world);
+  let asteroid = Asteroid.build('2', game.graphics, game.world);
   game.spawn(asteroid);
   
-  var planet = Planet.build(game.graphics);
+  var planet = Planet.build('3', game.graphics);
   game.spawn(planet);
 
-  var sun = Sun.build(game.graphics, game.world);
+  var sun = Sun.build('4', game.graphics, game.world);
   game.spawn(sun);
 
   // var alight = new THREE.AmbientLight();
