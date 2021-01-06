@@ -50,8 +50,8 @@ func ServeWs(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	sid := xid.New().String()
-	SpawnPlayerShip(sid, z)
+	pid := xid.New().String()
+	sid := SpawnPlayerShip(pid, z)
 	sp := message.Spawn{ID: sid, Type: message.SpawnPlayer}
 
 	msg, err = sp.Marshal()

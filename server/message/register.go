@@ -3,7 +3,7 @@ package message
 import "encoding/json"
 
 type Register struct {
-	ID string
+	ID string `json:"id"`
 }
 
 func (r *Register) Marshal() ([]byte, error) {

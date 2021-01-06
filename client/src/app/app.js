@@ -56,9 +56,9 @@ export default class App {
     let msgs = this.network.flushIncoming();
     let spawns = this.network.filterSpawns(msgs);
     spawns.forEach(s => {
-      console.log(`got spawn: ${s}`)
-      Ship.build(s.id, this.graphics, this.input, this.hud, this.world, this.network)
-        .then(ship => { this.spawn(ship); });
+      console.log(s)
+      Ship.build(s.data.id, this.graphics, this.input, this.hud, this.world, this.network)
+        .then(ship => { console.log(ship); this.spawn(ship); });
     }); //TODO this does not belong here
 
     let transforms = this.network.filterTransforms(msgs);
@@ -67,7 +67,7 @@ export default class App {
       transforms.forEach(t => {
         if (ent.id == t.data.id) {
           let t1 = ent.getComponentThatCan('setPos');
-          t1.setPos(t.data.X, t.data.Y, t.data.Z);
+          t1.setPos(t.data.x, t.data.y, t.data.z);
         }
       })
       ent.update(dt);

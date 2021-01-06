@@ -26,7 +26,7 @@ type Config struct {
 func (cfg *Config) Init(log log.Logger) {
 	cfg.Component.Init(`loop`, log)
 
-	cfg.Rate = time.Second
+	cfg.Rate = time.Second / 30
 
 	if cfg.Rate == 0 {
 		cfg.Log.Fatal().Msg(`missing rate, cannot start game loop`)
@@ -77,7 +77,7 @@ func (cfg *Config) Run() error {
 		}
 	}()
 
-	// cfg.CollectInputs()
+	cfg.CollectInputs()
 
 	return nil
 }
@@ -86,7 +86,7 @@ func (cfg *Config) CollectInputs() {
 	// cfg.Log.Info().Msg(`collecting inputs`)
 	go func() {
 		for msg := range cfg.Incoming {
-			// cfg.Log.Info().Str(`msg`, string(msg)).Msg(`got message`)
+			cfg.Log.Info().Str(`msg`, string(msg)).Msg(`got message in loop`)
 			var i message.Input
 			err := message.Unmarshal(msg, &i)
 			if err != nil {

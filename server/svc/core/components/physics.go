@@ -47,10 +47,10 @@ func (p *Physics) ApplyRotation() {
 func (p *Physics) CalculateVelocity(dt time.Duration) {
 	if p.accelerating {
 		vix := p.Velocity.X
-		vfx := vix + (p.AccelerationFactor*math.Sin(p.Transform.Rotation.Y))*float64(dt)
+		vfx := vix + (p.AccelerationFactor*math.Sin(p.Transform.Rotation.Y))*dt.Seconds()
 
 		viz := p.Velocity.Z
-		vfz := viz + (p.AccelerationFactor*math.Cos(p.Transform.Rotation.Y))*float64(dt)
+		vfz := viz + (p.AccelerationFactor*math.Cos(p.Transform.Rotation.Y))*dt.Seconds()
 
 		dir := primitives.Vec2{X: vfx, Y: vfz}
 		mag := dir.Magnitude()
@@ -68,7 +68,7 @@ func (p *Physics) CalculateVelocity(dt time.Duration) {
 
 func (p *Physics) UpdatePosition(dt time.Duration) {
 	d := primitives.Vec3{X: p.Velocity.X, Z: p.Velocity.Z}
-	d.MultScalar(float64(dt))
+	d.MultScalar(dt.Seconds())
 	p.Transform.AddPosition(d)
 }
 

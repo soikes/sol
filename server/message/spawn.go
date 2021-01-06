@@ -3,9 +3,9 @@ package message
 import "encoding/json"
 
 type Spawn struct {
-	ID string
+	ID string `json:"id"`
 
-	Type SpawnType
+	Type SpawnType `json:"type"`
 }
 
 func (s *Spawn) Marshal() ([]byte, error) {
