@@ -8,9 +8,9 @@ import (
 func SpawnPlayerShip(pid string, z *Zone) string { //TODO look up ship associated with player from DB
 	shipTrans := components.Transform{}
 	shipPhys := components.NewPhysics(&shipTrans)
-	shipPhys.AccelerationFactor = 1
-	shipPhys.MaxSpeed = 10
-	shipPhys.RotationFactor = 1
+	shipPhys.AccelerationFactor = 8
+	shipPhys.MaxSpeed = 15
+	shipPhys.RotationFactor = 0.05
 	shipInput := components.NewInput(&shipPhys)
 	sp := components.NewPlayer(pid)
 	ship := core.NewEntity(&shipTrans, &shipPhys, &shipInput, &sp)

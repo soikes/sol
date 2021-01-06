@@ -20,7 +20,7 @@ export default class App {
   }
 
   configure() {
-    // this.fps = 60;
+    this.fps = 30;
     this.lastTs = performance.now();
     this.interval = 1000 / this.fps;
   }
@@ -32,16 +32,17 @@ export default class App {
   run(ts) {
     this.stopFrame = window.requestAnimationFrame((ts) => { this.run(ts); });
 
-    let dt = (ts - this.lastTs) / 1000; // seconds, so calculations are all consistent e.g. m/s
-    this.lastTs = ts;
+    let now = performance.now();
+    let dt = (now - this.lastTs); // seconds, so calculations are all consistent e.g. m/s
+    // this.lastTs = ts;
     // let now = Date.now();
     // let dt = now - this.lastTs;
 
-    // if (dt > this.interval) {
-      // this.lastTs = now - (dt % this.interval);
+    if (dt > this.interval) {
+      this.lastTs = now - (dt % this.interval);
       this.update(dt);
       this.graphics.render();
-    // }
+    }
   }
 
   start() {
