@@ -10,7 +10,13 @@ import (
 type Input struct {
 	Physics *Physics
 
-	pending message.Input
+	entity    string
+	isPending bool
+	pending   message.Input
+}
+
+func (i *Input) Attach(entity string) {
+	i.entity = entity
 }
 
 func NewInput(p *Physics) Input {
@@ -18,7 +24,9 @@ func NewInput(p *Physics) Input {
 }
 
 func (i *Input) Update(dt time.Duration) {
-	log.Info().Interface(`pending`, i.pending).Msg(`update`)
+	if i.isPending {
+		log.Info().Interface(`pending`, i.pending).Msg(`update`)
+	}
 	if i.pending.ForwardPress {
 		i.Physics.Accelerate()
 	} else {
@@ -32,9 +40,11 @@ func (i *Input) Update(dt time.Duration) {
 	} else {
 		i.Physics.StopRotating()
 	}
+	i.isPending = false
 	i.pending = message.Input{} // TODO is this bad? How can we reset this value after update fires?
 }
 
 func (i *Input) QueueInput(m message.Input) {
+	i.isPending = true
 	i.pending = m //TODO make this a queue that drops messages that are too old - prevent late input from being processed, makes driving suck
 }

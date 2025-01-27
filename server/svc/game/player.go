@@ -13,7 +13,8 @@ func SpawnPlayerShip(pid string, z *Zone) string { //TODO look up ship associate
 	shipPhys.RotationFactor = 0.05
 	shipInput := components.NewInput(&shipPhys)
 	sp := components.NewPlayer(pid)
-	ship := core.NewEntity(&shipTrans, &shipPhys, &shipInput, &sp)
+	ship := core.NewEntity()
+	ship.AddComponents(&shipTrans, &shipPhys, &shipInput, &sp)
 	z.Spawn(ship)
 
 	return ship.Id

@@ -7,7 +7,7 @@ type Register struct {
 }
 
 func (r *Register) Marshal() ([]byte, error) {
-	e := Envelope{
+	e := Msg{
 		Type: MsgRegister,
 		Data: r,
 	}

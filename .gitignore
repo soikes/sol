@@ -4,3 +4,4 @@ client/dist/index.js
 cockroach-data
 server/bin/*
 !server/bin/atom
+**/.DS_Store

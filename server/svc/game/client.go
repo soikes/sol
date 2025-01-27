@@ -41,6 +41,7 @@ func ServeWs(w http.ResponseWriter, r *http.Request) {
 	re := message.Register{ID: cid}
 	msg, err := re.Marshal()
 	if err != nil {
+		log.Warn().Err(err).Msg(`failed to marshal register message`)
 		return
 	}
 	err = conn.WriteMessage(websocket.TextMessage, msg)
@@ -55,6 +56,10 @@ func ServeWs(w http.ResponseWriter, r *http.Request) {
 	sp := message.Spawn{ID: sid, Type: message.SpawnPlayer}
 
 	msg, err = sp.Marshal()
+	if err != nil {
+		log.Warn().Err(err).Msg(`failed to marshal spawn message`)
+		return
+	}
 	err = conn.WriteMessage(websocket.TextMessage, msg)
 	if err != nil {
 		log.Warn().Err(err).Msg(`failed to send spawn message to client`)
@@ -66,6 +71,14 @@ func ServeWs(w http.ResponseWriter, r *http.Request) {
 
 	go c.readPump()
 	go c.writePump()
+
+	sp = message.Spawn{ID: sid, Type: message.SpawnOtherPlayer} // TODO find a better way to notify others without re-marshalling another message
+	msg, err = sp.Marshal()
+	if err != nil {
+		log.Warn().Err(err).Msg(`failed to marshal spawnotherplayer message`)
+		return
+	}
+	c.hub.Broadcast <- msg // Tell everyone else we spawned
 }
 
 func (c *Client) readPump() {
@@ -106,6 +119,8 @@ func (c *Client) writePump() {
 		case msg := <-c.outgoing:
 			if err := c.conn.WriteMessage(websocket.TextMessage, msg); err != nil {
 				log.Error().Err(err).Msg(`failed to send msg to client`)
+				c.hub.DeregisterClient(c)
+				return
 			}
 		}
 	}

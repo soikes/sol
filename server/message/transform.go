@@ -1,16 +1,19 @@
 package message
 
-import "encoding/json"
+import (
+	"encoding/json"
+
+	"soikke.li/sol/primitives"
+)
 
 type Transform struct {
-	ID string  `json:"id"`
-	X  float64 `json:"x"`
-	Y  float64 `json:"y"`
-	Z  float64 `json:"z"`
+	ID  string          `json:"id"`
+	Pos primitives.Vec3 `json:"pos"`
+	Rot primitives.Vec3 `json:"rot"`
 }
 
 func (t *Transform) Marshal() ([]byte, error) {
-	e := Envelope{
+	e := Msg{
 		Type: MsgTransform,
 		Data: t,
 	}

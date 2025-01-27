@@ -4,6 +4,12 @@ import "time"
 
 type Player struct {
 	ID string
+
+	entity string
+}
+
+func (p *Player) Attach(entity string) {
+	p.entity = entity
 }
 
 func NewPlayer(id string) Player {

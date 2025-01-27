@@ -1,9 +1,9 @@
 package primitives
 
 type Vec3 struct {
-	X float64 `json:"X"`
-	Y float64 `json:"Y"`
-	Z float64 `json:"Z"`
+	X float64 `json:"x"`
+	Y float64 `json:"y"`
+	Z float64 `json:"z"`
 }
 
 func (v *Vec3) MultScalar(s float64) {

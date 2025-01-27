@@ -52,7 +52,7 @@ func waitForCmds(ctx context.Context, cmds []*exec.Cmd) error {
 			if err != nil {
 				err = fmt.Errorf(`service %s failed: %w`, cmd.Path, err)
 			}
-			done<-err
+			done <- err
 		}(cmd)
 	}
 	for i := 0; i < len(cmds); i++ {

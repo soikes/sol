@@ -54,15 +54,32 @@ func buildNPM(target string) (*exec.Cmd, error) {
 	return cmd, nil
 }
 
+func buildBun(target string) (*exec.Cmd, error) {
+	cmd := exec.Command(
+		`bun`,
+		`build`,
+		fmt.Sprintf("../client/%s", target),
+		`--outdir`,
+		`../client/dist`,
+	)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	err := cmd.Start()
+	if err != nil {
+		return nil, err
+	}
+	return cmd, nil
+}
+
 func buildSol() (*exec.Cmd, error) {
 	return buildGo(`soikke.li/sol/cmd/sol`)
 }
 
 func buildClient() (*exec.Cmd, error) {
-	return buildNPM(`../client`)
+	return buildBun(`src/game.js`)
 }
 
-//TODO return slice of cmds
+// TODO return slice of cmds
 func buildAll() (*exec.Cmd, error) {
 	c, err := buildClient()
 	if err != nil {

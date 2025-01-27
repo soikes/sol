@@ -7,14 +7,13 @@ import (
 )
 
 type Entity struct {
-	Id string
+	Id         string
 	Components []Component
 }
 
-func NewEntity(components ...Component) Entity {
+func NewEntity() Entity {
 	return Entity{
 		Id: xid.New().String(),
-		Components: components,
 	}
 }
 
@@ -24,6 +23,9 @@ func (e *Entity) Update(dt time.Duration) {
 	}
 }
 
-func (e *Entity) AddComponent(c Component) {
-	e.Components = append(e.Components, c)
+func (e *Entity) AddComponents(c ...Component) {
+	for _, c := range c {
+		c.Attach(e.Id)
+		e.Components = append(e.Components, c)
+	}
 }

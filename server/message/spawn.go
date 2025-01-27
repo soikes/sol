@@ -9,7 +9,7 @@ type Spawn struct {
 }
 
 func (s *Spawn) Marshal() ([]byte, error) {
-	e := Envelope{
+	e := Msg{
 		Type: MsgSpawn,
 		Data: s,
 	}

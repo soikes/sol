@@ -24,6 +24,12 @@ type Physics struct {
 	RotationBuf       primitives.Vec3 `json:"-"`
 
 	Transform *Transform `json:"-"`
+
+	entity string
+}
+
+func (p *Physics) Attach(entity string) {
+	p.entity = entity
 }
 
 func NewPhysics(t *Transform) Physics {

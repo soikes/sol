@@ -7,7 +7,7 @@ import (
 
 func Unmarshal(b []byte, in interface{}) error {
 	var d json.RawMessage
-	e := Envelope{
+	e := Msg{
 		Data: &d,
 	}
 	if err := json.Unmarshal(b, &e); err != nil {

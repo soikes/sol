@@ -7,6 +7,7 @@ import (
 	"soikke.li/sol"
 	"soikke.li/sol/log"
 	"soikke.li/sol/message"
+	"soikke.li/sol/primitives"
 	"soikke.li/sol/svc/core"
 	"soikke.li/sol/svc/core/components"
 )
@@ -16,7 +17,7 @@ type Config struct {
 
 	Rate time.Duration `yaml:"rate"`
 
-	Entities map[string]core.Entity // TODO use slice for performance here
+	entities map[string]core.Entity // TODO use slice for performance here
 	mu       *sync.Mutex
 
 	Incoming chan []byte // TODO Consider how to structure this per client instead of mux over one channel
@@ -33,7 +34,7 @@ func (cfg *Config) Init(log log.Logger) {
 	}
 	cfg.mu = &sync.Mutex{}
 
-	cfg.Entities = map[string]core.Entity{}
+	cfg.entities = map[string]core.Entity{}
 	cfg.Incoming = make(chan []byte)
 	cfg.Outgoing = make(chan []byte)
 }
@@ -47,7 +48,7 @@ func (cfg *Config) Run() error {
 		for cur := range t.C {
 			dt := cur.Sub(last)
 			cfg.Log.Info().Dur(`dt`, dt).Msg(`elapsed`)
-			for _, e := range cfg.Entities {
+			for _, e := range cfg.entities { // TODO is this thread safe?
 				cfg.Log.Info().Str(`id`, e.Id).Msg(`updating entity`)
 				e.Update(dt)
 				for _, c := range e.Components {
@@ -55,13 +56,21 @@ func (cfg *Config) Run() error {
 					if ok {
 						msg := message.Transform{
 							ID: e.Id,
-							X:  t.Position.X,
-							Y:  t.Position.Y,
-							Z:  t.Position.Z,
+							Pos: primitives.Vec3{
+								X: t.Position.X,
+								Y: t.Position.Y,
+								Z: t.Position.Z,
+							},
+							Rot: primitives.Vec3{
+								X: t.Rotation.X,
+								Y: t.Rotation.Y,
+								Z: t.Rotation.Z,
+							},
 						}
 						b, err := msg.Marshal()
 						if err != nil {
 							cfg.Log.Error().Err(err).Msg(`failed to marshal outgoing transform message`)
+							continue
 						}
 						cfg.Outgoing <- b
 						// select {
@@ -92,7 +101,9 @@ func (cfg *Config) CollectInputs() {
 			if err != nil {
 				cfg.Log.Info().Err(err).Msg(`unknown message type`)
 			}
-			e := cfg.Entities[i.ID]
+			cfg.mu.Lock()
+			e := cfg.entities[i.ID]
+			cfg.mu.Unlock()
 			for _, c := range e.Components {
 				in, ok := c.(*components.Input)
 				if ok {
@@ -107,6 +118,6 @@ func (cfg *Config) CollectInputs() {
 func (cfg *Config) Spawn(e core.Entity) {
 	cfg.Log.Info().Str(`id`, e.Id).Msg(`spawning entity`)
 	cfg.mu.Lock()
-	cfg.Entities[e.Id] = e
+	cfg.entities[e.Id] = e
 	cfg.mu.Unlock()
 }

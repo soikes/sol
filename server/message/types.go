@@ -7,10 +7,12 @@ const (
 	MsgTransform
 	MsgSpawn
 	MsgRegister
+	MsgSync
 )
 
 type SpawnType int
 
 const (
 	SpawnPlayer SpawnType = iota
+	SpawnOtherPlayer
 )

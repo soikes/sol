@@ -1,4 +1,4 @@
-import * as THREE from 'three';
+import * as THREE from "three";
 
 export default class TransformComponent {
   constructor(pos, rot, scale) {
@@ -8,7 +8,7 @@ export default class TransformComponent {
     } else {
       this.pos = pos;
     }
-    
+
     if (this.rot === null) {
       this.rot = new THREE.Vector3();
     } else {
@@ -39,9 +39,16 @@ export default class TransformComponent {
   }
 
   setPos(x, y, z) {
-    this.pos.setX(x)
-    this.pos.setY(y)
-    this.pos.setZ(z)
+    this.pos.setX(x);
+    this.pos.setY(y);
+    this.pos.setZ(z);
+    this.changed = true;
+  }
+
+  setRot(x, y, z) {
+    this.rot.setX(x);
+    this.rot.setY(y);
+    this.rot.setZ(z);
     this.changed = true;
   }
 

@@ -6,4 +6,5 @@ import (
 
 type Component interface {
 	Update(time.Duration)
+	Attach(string)
 }
