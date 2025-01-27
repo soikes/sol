@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "types": ["bun-types"],
+    "target": "es6",
+    "module": "es6", // Use ES6 modules
+    "lib": ["dom", "es6"], // Include type definitions for the DOM and ES6
+    "outDir": "./dist", // Output directory for compiled files
+    "rootDir": "./src", // Root directory of your TypeScript files
+    "strict": true, // Enable all strict type-checking options
+    "moduleResolution": "node", // Module resolution strategy
+    "esModuleInterop": true, // Enables compatibility with default import syntax in Babel
+    "sourceMap": true // Generates source map files for debugging
+  },
+  "include": [
+    "./src/**/*" // Include all files in the src directory
+  ],
+  "exclude": [
+    "node_modules", // Exclude the node_modules directory
+    "**/*.test.ts" // Exclude test files
+  ]
+}
